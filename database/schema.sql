@@ -13,15 +13,7 @@ CREATE TABLE Patients(
     AssignedDoctorID INTEGER,
     FOREIGN KEY (AssignedDoctorID) REFERENCES Users(UserID)
 );
--- CREATE TABLE Appointments(
---     AppointmentID INTEGER PRIMARY KEY AUTOINCREMENT,
---     PatientID INTEGER,
---     DoctorID INTEGER,
---     Time TEXT,
---     IsSurgury INTEGER DEFAULT 0,
---     FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),
---     FOREIGN KEY (DoctorID) REFERENCES Users(UserID),
--- );
+
 CREATE TABLE Doctors(
     DoctorID INTEGER PRIMARY KEY AUTOINCREMENT,
     Name TEXT NOT NULL,
