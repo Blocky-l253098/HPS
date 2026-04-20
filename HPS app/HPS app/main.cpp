@@ -1,4 +1,4 @@
-#include "DatabaseManager.h"
-int main() {
-	cout << "ok";
-}
+//#include "DatabaseManager.h"
+//int main() {
+//	cout << "ok";
+//}

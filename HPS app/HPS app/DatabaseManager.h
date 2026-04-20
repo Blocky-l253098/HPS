@@ -9,7 +9,7 @@ class DatabaseManager{
 	char* errorMessage;
 public:
 	bool Connect() {
-		if(sqlite3_open("HPS.db", &DB)== SQLITE_OK) {
+		if(sqlite3_open("hospital.db", &DB)== SQLITE_OK) {
 			return true;
 		}
 		return false;
@@ -47,10 +47,22 @@ public:
 	}
 	bool AddDoctor(string name, string specialty,string salary,bool isAvailable) {
 		if (DB) {
-			string sqlQuery = "INSERT INTO Doctors (Name, Specialty, Salary, IsAvailable) VALUES ('" + name + "', '" + specialty + "', '" + salary + "', '" + (isAvailable ? "1" : "0") + "');";
-			return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+			if (isAvailable) {
+				string sqlQuery = "INSERT INTO Doctors (Name, Specialty, Salary) VALUES ('" + name + "', '" + specialty + "', '" + salary + "');";
+				return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+			}
 		}
 		return false;
+	}
+	
+	string GetLastError() {
+		if (errorMessage) {
+			string err = errorMessage;
+			sqlite3_free(errorMessage);
+			errorMessage = nullptr;
+			return err;
+		}
+		return "Unknown error or database not open.";
 	}
 	bool CheckConflict(int doctorId, string time) {
 		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorId=" + to_string(doctorId) + " AND Time='" + time + "';";
