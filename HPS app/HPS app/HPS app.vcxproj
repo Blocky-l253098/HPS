@@ -19,18 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\downloads\sqlite3.c">
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainForm.cpp" />
+    <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="sqlite3.c">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\downloads\sqlite3.h" />
+    <ClInclude Include="AdminDashboardForm.h" />
+    <ClInclude Include="BedTrackingForm.h" />
+    <ClInclude Include="Dashboard.h" />
     <ClInclude Include="DatabaseManager.h" />
+    <ClInclude Include="DoctorDashboardForm.h" />
+    <ClInclude Include="Login.h" />
+    <ClInclude Include="LoginForm.h" />
     <ClInclude Include="MainForm.h">
-      <FileType>CppForm</FileType>
+      <FileType>CppHeader</FileType>
     </ClInclude>
+    <ClInclude Include="MyForm.h" />
+    <ClInclude Include="PatientDashboardForm.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="User.h" />
@@ -46,6 +56,11 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MyForm.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hospital.db" />
+    <None Include="hospital_test.db" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -107,6 +122,8 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAs>Default</CompileAs>
+      <CompileAsManaged>true</CompileAsManaged>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
