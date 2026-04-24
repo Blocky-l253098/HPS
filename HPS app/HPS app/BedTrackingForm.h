@@ -130,9 +130,13 @@ namespace HospitalManagment {
 						btn->Text = "Bed " + id + "\n" + status;
 						btn->Tag = id;
 						btn->BackColor = (status == "Vacant") ? Color::LightGreen : Color::Salmon;
+<<<<<<< HEAD
 						btn->FlatStyle = FlatStyle::Flat;
 						btn->Click += gcnew EventHandler(this, &BedTrackingForm::OnRoomClick);
 
+=======
+						btn->Click += gcnew EventHandler(this, &BedTrackingForm::OnRoomClick);
+>>>>>>> 2f21b2213bb6bb8ed8ed666c2479a44396bd9467
 						pnlRoomGrid->Controls->Add(btn);
 					}
 				}
@@ -246,4 +250,8 @@ namespace HospitalManagment {
 	};
 }
 
+<<<<<<< HEAD
 #endif
+=======
+#endif 
+>>>>>>> 2f21b2213bb6bb8ed8ed666c2479a44396bd9467
