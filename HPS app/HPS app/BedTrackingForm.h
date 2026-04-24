@@ -80,7 +80,7 @@ namespace HospitalManagment {
 						btn->Text = "Room " + id + "\n" + status;
 						btn->Tag = id;
 						btn->BackColor = (status == "Vacant") ? Color::LightGreen : Color::Salmon;
-						btn->Click -= gcnew EventHandler(this, &BedTrackingForm::OnRoomClick);
+						btn->Click += gcnew EventHandler(this, &BedTrackingForm::OnRoomClick);
 						pnlRoomGrid->Controls->Add(btn);
 					}
 				}
