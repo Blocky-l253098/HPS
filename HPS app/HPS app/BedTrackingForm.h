@@ -250,8 +250,8 @@ namespace HospitalManagment {
 	};
 }
 
-<<<<<<< HEAD
+
 #endif
-=======
+
 #endif 
->>>>>>> 2f21b2213bb6bb8ed8ed666c2479a44396bd9467
+
