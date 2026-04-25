@@ -52,8 +52,11 @@ public:
 		}
 		return false;
 	}
-	bool CheckConflict(int doctorId, string time) {
-		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorId=" + to_string(doctorId) + " AND Time='" + time + "';";
+	bool CheckConflict(int doctorId, string StartTime, string EndTime, bool isSurgery) {
+		string oppositeType = isSurgery ? "0" : "1";
+		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorId=" + to_string(doctorId) + 
+					 " AND IsSurgery=" + oppositeType + 
+					 " AND (StartTime < '" + EndTime + "' AND EndTime > '" + StartTime + "');";
 		int count = 0;
 		sqlite3_stmt* stmt;
 		if(sqlite3_prepare_v2(DB,sql.c_str(),-1, &stmt, nullptr) == SQLITE_OK) {
@@ -62,10 +65,8 @@ public:
 			}
 			sqlite3_finalize(stmt);
 		}
-		if(count>0) {
-			return true;
-		}
-		return false;	
+		
+		return (count > 0);	
 	}
 	bool BookAppointment(int patientId, int doctorId, string Starttime,string EndTime,bool isSurgury) {
 		string surg;
