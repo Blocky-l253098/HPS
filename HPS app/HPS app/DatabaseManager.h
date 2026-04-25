@@ -126,6 +126,19 @@ public:
 		}
 		return false;
 	}
+	bool EnsureCurrentSessionTable() {
+    if (DB) {
+        const char* sql = "CREATE TABLE IF NOT EXISTS CurrentSession ("
+                          "SessionID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                          "UserID INTEGER, "
+                          "UserName TEXT, "
+                          "UserRole TEXT, "
+                          "LoginTime DATETIME DEFAULT CURRENT_TIMESTAMP"
+                          ");";
+        return (sqlite3_exec(DB, sql, nullptr, 0, &errorMessage) == SQLITE_OK);
+    }
+    return false;
+}
 	sqlite3* getDB() {
 			return DB;
 		}

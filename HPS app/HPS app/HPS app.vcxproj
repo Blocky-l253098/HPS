@@ -29,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="AdminDashboardForm.h" />
     <ClInclude Include="BedTrackingForm.h" />
+    <ClInclude Include="BillingModule.h" />
     <ClInclude Include="Dashboard.h" />
     <ClInclude Include="DatabaseManager.h" />
     <ClInclude Include="DoctorDashboardForm.h" />
