@@ -99,6 +99,35 @@ public:
 		string sqlQuery = "DELETE FROM Notices WHERE Id=" + to_string(id) + ";";
 		return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
 	}
-
+	bool AddMedicalRecord(int patientId, int doctorId, string diagnosis, string symptoms, string treatment) {
+		if (DB) {
+			string sqlQuery = "INSERT INTO MedicalRecords (PatientID, DoctorID, Diagnosis, Symptoms, Treatment) VALUES (" +
+				to_string(patientId) + ", " + to_string(doctorId) + ", '" + diagnosis + "', '" + symptoms + "', '" + treatment + "');";
+			return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+		}
+		return false;
+	}
+	bool AddPrescription(int patientId, int doctorId, string medicineDetails, string instructions) {
+			string sqlQuery = "INSERT INTO Prescriptions (PatientID, DoctorID, MedicineDetails, Instructions) VALUES (" +
+				to_string(patientId) + ", " + to_string(doctorId) + ", '" + medicineDetails + "', '" + instructions + "');";
+			return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+		return false;
+	}
+	bool AddPayrollRecord(int doctorId, double amount) {
+			string sqlQuery = "INSERT INTO Payroll (DoctorID, Amount) VALUES (" +
+				to_string(doctorId) + ", " + to_string(amount) + ");";
+			return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+		return false;
+	}
+	bool AddBed(string bedId, string roomNumber) {
+		if (DB) {
+			string sqlQuery = "INSERT INTO Beds (BedID, RoomNumber) VALUES ('" + bedId + "', '" + roomNumber + "');";
+			return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+		}
+		return false;
+	}
+	sqlite3* getDB() {
+			return DB;
+		}
 };
 #endif
