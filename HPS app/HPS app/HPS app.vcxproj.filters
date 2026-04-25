@@ -35,6 +35,7 @@
     <ClInclude Include="sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,5 +45,22 @@
     <ClInclude Include="SessionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="SurgeryForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppointmentForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hospital.db" />
+    <None Include="hospital_test.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MyForm.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
+>>>>>>> Stashed changes
   </ItemGroup>
 </Project>

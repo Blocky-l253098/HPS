@@ -54,6 +54,7 @@ public:
 		}
 		return false;
 	}
+<<<<<<< Updated upstream
 	
 	string GetLastError() {
 		if (errorMessage) {
@@ -66,6 +67,13 @@ public:
 	}
 	bool CheckConflict(int doctorId, string time) {
 		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorId=" + to_string(doctorId) + " AND Time='" + time + "';";
+=======
+	bool CheckConflict(int doctorId, string StartTime, string EndTime, bool isSurgury) {
+		string oppositeType = isSurgury ? "0" : "1";
+		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorId=" + to_string(doctorId) + 
+					 " AND IsSurgery=" + oppositeType + 
+					 " AND (StartTime < '" + EndTime + "' AND EndTime > '" + StartTime + "');";
+>>>>>>> Stashed changes
 		int count = 0;
 		sqlite3_stmt* stmt;
 		if(sqlite3_prepare_v2(DB,sql.c_str(),-1, &stmt, nullptr) == SQLITE_OK) {
@@ -100,5 +108,28 @@ public:
 		return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
 	}
 
+	int GetUserID(string username) {
+		int id = 0;
+		string sql = "SELECT UserID FROM Users WHERE Username='" + username + "';";
+		sqlite3_stmt* stmt;
+		if (sqlite3_prepare_v2(DB, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				id = sqlite3_column_int(stmt, 0);
+			sqlite3_finalize(stmt);
+		}
+		return id;
+	}
+
+	int GetPatientID(int userID) {
+		int id = 0;
+		string sql = "SELECT PatientID FROM Patients WHERE UserID=" + to_string(userID) + ";";
+		sqlite3_stmt* stmt;
+		if (sqlite3_prepare_v2(DB, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+			if (sqlite3_step(stmt) == SQLITE_ROW)
+				id = sqlite3_column_int(stmt, 0);
+			sqlite3_finalize(stmt);
+		}
+		return id;
+	}
 };
 #endif
