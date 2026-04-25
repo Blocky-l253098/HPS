@@ -67,7 +67,7 @@ public:
 		}
 		return false;	
 	}
-	bool BookAppointment(int patientId, int doctorId, string time,bool isSurgury) {
+	bool BookAppointment(int patientId, int doctorId, string Starttime,string EndTime,bool isSurgury) {
 		string surg;
 		if(isSurgury) {
 			surg = "1";
@@ -75,7 +75,7 @@ public:
 		else {
 			surg = "0";
 		}
-		string sqlQuery = "INSERT INTO Appointments (PatientId, DoctorId, Time, IsSurgery) VALUES (" + to_string(patientId) + ", " + to_string(doctorId) + ", '" + time + "', " + surg + ");";
+		string sqlQuery = "INSERT INTO Appointments (PatientId, DoctorId, StartTime, EndTime, IsSurgery) VALUES (" + to_string(patientId) + ", " + to_string(doctorId) + ", '" + Starttime + "', '" + EndTime + "', " + surg + ");";
 
 		return (sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
 	}
@@ -85,6 +85,17 @@ public:
 	}
 	bool UpdateBedStatus(int patientId, string bedId) {
 		string sqlQuery = "UPDATE Patients SET AssignedBed='" + bedId + "' WHERE PatientID=" + to_string(patientId) + ";";
+		string sqlQuery2 = "UPDATE Beds SET Status = CASE WHEN Status = 'Vacant' THEN 'Occupied' ELSE 'Vacant' END WHERE BedID='" + bedId + "';";
+		
+		return((sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK) && 
+			   (sqlite3_exec(DB, sqlQuery2.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK));
+	}
+	bool SetNotices(int id,string content) {
+		string sqlQuery = "UPDATE Notices SET Message='" + content + "' WHERE Id=" + to_string(id) + ";";
+		return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+	}
+	bool removeNotices(int id) {
+		string sqlQuery = "DELETE FROM Notices WHERE Id=" + to_string(id) + ";";
 		return(sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
 	}
 
