@@ -77,6 +77,12 @@
     <ClInclude Include="BillingModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AppointmentForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SurgeryForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="hospital.db" />

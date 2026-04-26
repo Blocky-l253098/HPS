@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdminDashboardForm.h" />
+    <ClInclude Include="AppointmentForm.h" />
     <ClInclude Include="BedTrackingForm.h" />
     <ClInclude Include="BillingModule.h" />
     <ClInclude Include="Dashboard.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SurgeryForm.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>

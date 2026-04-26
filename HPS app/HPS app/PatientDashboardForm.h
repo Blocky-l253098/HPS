@@ -3,8 +3,11 @@
 #include "DatabaseManager.h"
 #include "Login.h"
 #include <msclr/marshal_cppstd.h>
+#include "AppointmentForm.h"
+#include "SurgeryForm.h"
 
-namespace HPSapp {
+namespace HPSapp
+{
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -22,6 +25,7 @@ namespace HPSapp {
 	private: System::Windows::Forms::Label^ welcomeLabel;
 	private: System::Windows::Forms::Button^ viewRecordsButton;
 	private: System::Windows::Forms::Button^ bookAppointmentButton;
+	private: System::Windows::Forms::Button^ bookSurgeryButton;
 	private: System::Windows::Forms::Button^ viewBillButton;
 	private: System::Windows::Forms::Button^ logoutButton;
 	private: System::Windows::Forms::Label^ titleLabel;
@@ -47,7 +51,7 @@ namespace HPSapp {
 			if (dbManager) delete dbManager;
 		}
 
-	private: System::ComponentModel::Container ^components;
+	private: System::ComponentModel::Container^ components;
 
 	private:
 		void InitializeComponent(void)
@@ -55,6 +59,7 @@ namespace HPSapp {
 			this->welcomeLabel = (gcnew System::Windows::Forms::Label());
 			this->viewRecordsButton = (gcnew System::Windows::Forms::Button());
 			this->bookAppointmentButton = (gcnew System::Windows::Forms::Button());
+			this->bookSurgeryButton = (gcnew System::Windows::Forms::Button());
 			this->viewBillButton = (gcnew System::Windows::Forms::Button());
 			this->logoutButton = (gcnew System::Windows::Forms::Button());
 			this->titleLabel = (gcnew System::Windows::Forms::Label());
@@ -130,12 +135,23 @@ namespace HPSapp {
 			this->bookAppointmentButton->UseVisualStyleBackColor = false;
 			this->bookAppointmentButton->Click += gcnew System::EventHandler(this, &PatientDashboardForm::bookAppointmentButton_Click);
 
+			// SugeryButton
+			this->bookSurgeryButton->BackColor = System::Drawing::Color::FromArgb(153, 0, 0);
+			this->bookSurgeryButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
+			this->bookSurgeryButton->ForeColor = System::Drawing::Color::White;
+			this->bookSurgeryButton->Location = System::Drawing::Point(340, 150);
+			this->bookSurgeryButton->Name = L"bookSurgeryButton";
+			this->bookSurgeryButton->Size = System::Drawing::Size(150, 40);
+			this->bookSurgeryButton->Text = L"Book Surgery";
+			this->bookSurgeryButton->UseVisualStyleBackColor = false;
+			this->bookSurgeryButton->Click += gcnew System::EventHandler(this, &PatientDashboardForm::bookSurgeryButton_Click);
+
 			// viewBillButton
 			this->viewBillButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(204)), static_cast<System::Int32>(static_cast<System::Byte>(102)));
 			this->viewBillButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->viewBillButton->ForeColor = System::Drawing::Color::White;
-			this->viewBillButton->Location = System::Drawing::Point(340, 150);
+			this->viewBillButton->Location = System::Drawing::Point(180, 200);
 			this->viewBillButton->Name = L"viewBillButton";
 			this->viewBillButton->Size = System::Drawing::Size(120, 40);
 			this->viewBillButton->TabIndex = 4;
@@ -166,6 +182,7 @@ namespace HPSapp {
 			this->Controls->Add(this->logoutButton);
 			this->Controls->Add(this->viewBillButton);
 			this->Controls->Add(this->bookAppointmentButton);
+			this->Controls->Add(this->bookSurgeryButton);
 			this->Controls->Add(this->viewRecordsButton);
 			this->Controls->Add(this->welcomeLabel);
 			this->Controls->Add(this->titleLabel);
@@ -188,18 +205,29 @@ namespace HPSapp {
 		MessageBox::Show("View Medical Records - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
-	private: System::Void bookAppointmentButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("Book Appointment - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+	private: System::Void bookAppointmentButton_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		AppointmentForm^ form = gcnew AppointmentForm();
+		form->ShowDialog();
 	}
 
 	private: System::Void viewBillButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		MessageBox::Show("View Billing Information - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
-	private: System::Void logoutButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (MessageBox::Show("Are you sure you want to logout?", "Logout", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+	private: System::Void logoutButton_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (MessageBox::Show("Are you sure you want to logout?", "Logout", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes)
+		{
 			this->Close();
 		}
 	}
+
+	private: System::Void bookSurgeryButton_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		SurgeryForm^ form = gcnew SurgeryForm();
+		form->ShowDialog();
+	}
+
 	};
 }
