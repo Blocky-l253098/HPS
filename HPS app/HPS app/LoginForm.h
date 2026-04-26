@@ -6,6 +6,8 @@
 #include "AdminDashboardForm.h"
 #include "DoctorDashboardForm.h"
 #include "PatientDashboardForm.h"
+#include <cstdlib>
+#include <ctime>
 
 namespace HPSapp {
 
@@ -21,6 +23,10 @@ namespace HPSapp {
 	private:
 		DatabaseManager* dbManager;
 		Login* loginSession;
+		int captchaNum1;
+		int captchaNum2;
+		int correctAnswer;
+		bool captchaPassed;
 
 	private: System::Windows::Forms::TextBox^ usernameTextBox;
 	private: System::Windows::Forms::TextBox^ passwordTextBox;
@@ -30,13 +36,19 @@ namespace HPSapp {
 	private: System::Windows::Forms::Label^ titleLabel;
 	private: System::Windows::Forms::Label^ errorLabel;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::Label^ captchaLabel;
+	private: System::Windows::Forms::TextBox^ captchaTextBox;
+	private: System::Windows::Forms::Button^ refreshCaptchaButton;
 
 	public:
 		LoginForm(void)
 		{
 			dbManager = new DatabaseManager();
 			loginSession = new Login();
+			captchaPassed = false;
+			srand((unsigned)time(NULL));
 			InitializeComponent();
+			GenerateNewCaptcha();
 		}
 
 	protected:
@@ -53,6 +65,20 @@ namespace HPSapp {
 	private: System::ComponentModel::Container ^components;
 
 	private:
+		void GenerateNewCaptcha()
+		{
+			captchaNum1 = rand() % 50 + 1;
+			captchaNum2 = rand() % 50 + 1;
+			correctAnswer = captchaNum1 + captchaNum2;
+			captchaPassed = false;
+
+			String^ captchaQuestion = "What is " + captchaNum1.ToString() + " + " + captchaNum2.ToString() + " ?";
+			captchaLabel->Text = captchaQuestion;
+			captchaTextBox->Clear();
+			captchaTextBox->Focus();
+		}
+
+	private:
 		void InitializeComponent(void)
 		{
 			this->usernameTextBox = (gcnew System::Windows::Forms::TextBox());
@@ -63,6 +89,9 @@ namespace HPSapp {
 			this->titleLabel = (gcnew System::Windows::Forms::Label());
 			this->errorLabel = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->captchaLabel = (gcnew System::Windows::Forms::Label());
+			this->captchaTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->refreshCaptchaButton = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 
@@ -83,15 +112,49 @@ namespace HPSapp {
 			this->passwordTextBox->Size = System::Drawing::Size(250, 26);
 			this->passwordTextBox->TabIndex = 1;
 
+			// captchaLabel
+			this->captchaLabel->AutoSize = true;
+			this->captchaLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->captchaLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->captchaLabel->Location = System::Drawing::Point(200, 210);
+			this->captchaLabel->Name = L"captchaLabel";
+			this->captchaLabel->Size = System::Drawing::Size(100, 18);
+			this->captchaLabel->TabIndex = 8;
+			this->captchaLabel->Text = L"CAPTCHA:";
+			this->captchaLabel->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(240)), static_cast<System::Int32>(static_cast<System::Byte>(240)), static_cast<System::Int32>(static_cast<System::Byte>(240)));
+			this->captchaLabel->Padding = System::Windows::Forms::Padding(5);
+
+			// captchaTextBox
+			this->captchaTextBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->captchaTextBox->Location = System::Drawing::Point(200, 235);
+			this->captchaTextBox->Name = L"captchaTextBox";
+			this->captchaTextBox->Size = System::Drawing::Size(180, 26);
+			this->captchaTextBox->TabIndex = 2;
+
+			// refreshCaptchaButton
+			this->refreshCaptchaButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(200)), static_cast<System::Int32>(static_cast<System::Byte>(200)), static_cast<System::Int32>(static_cast<System::Byte>(200)));
+			this->refreshCaptchaButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->refreshCaptchaButton->ForeColor = System::Drawing::Color::Black;
+			this->refreshCaptchaButton->Location = System::Drawing::Point(390, 235);
+			this->refreshCaptchaButton->Name = L"refreshCaptchaButton";
+			this->refreshCaptchaButton->Size = System::Drawing::Size(60, 26);
+			this->refreshCaptchaButton->TabIndex = 3;
+			this->refreshCaptchaButton->Text = L"?? New";
+			this->refreshCaptchaButton->UseVisualStyleBackColor = false;
+			this->refreshCaptchaButton->Click += gcnew System::EventHandler(this, &LoginForm::refreshCaptchaButton_Click);
+
 			// loginButton
 			this->loginButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(102)), static_cast<System::Int32>(static_cast<System::Byte>(204)));
 			this->loginButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->loginButton->ForeColor = System::Drawing::Color::White;
-			this->loginButton->Location = System::Drawing::Point(200, 230);
+			this->loginButton->Location = System::Drawing::Point(200, 280);
 			this->loginButton->Name = L"loginButton";
 			this->loginButton->Size = System::Drawing::Size(250, 40);
-			this->loginButton->TabIndex = 2;
+			this->loginButton->TabIndex = 4;
 			this->loginButton->Text = L"Login";
 			this->loginButton->UseVisualStyleBackColor = false;
 			this->loginButton->Click += gcnew System::EventHandler(this, &LoginForm::loginButton_Click);
@@ -104,7 +167,7 @@ namespace HPSapp {
 			this->usernameLabel->Location = System::Drawing::Point(200, 95);
 			this->usernameLabel->Name = L"usernameLabel";
 			this->usernameLabel->Size = System::Drawing::Size(81, 18);
-			this->usernameLabel->TabIndex = 3;
+			this->usernameLabel->TabIndex = 5;
 			this->usernameLabel->Text = L"Username:";
 
 			// passwordLabel
@@ -115,7 +178,7 @@ namespace HPSapp {
 			this->passwordLabel->Location = System::Drawing::Point(200, 145);
 			this->passwordLabel->Name = L"passwordLabel";
 			this->passwordLabel->Size = System::Drawing::Size(76, 18);
-			this->passwordLabel->TabIndex = 4;
+			this->passwordLabel->TabIndex = 6;
 			this->passwordLabel->Text = L"Password:";
 
 			// titleLabel
@@ -126,7 +189,7 @@ namespace HPSapp {
 			this->titleLabel->Location = System::Drawing::Point(150, 20);
 			this->titleLabel->Name = L"titleLabel";
 			this->titleLabel->Size = System::Drawing::Size(350, 31);
-			this->titleLabel->TabIndex = 5;
+			this->titleLabel->TabIndex = 7;
 			this->titleLabel->Text = L"Hospital Management System";
 
 			// errorLabel
@@ -134,28 +197,31 @@ namespace HPSapp {
 			this->errorLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->errorLabel->ForeColor = System::Drawing::Color::Red;
-			this->errorLabel->Location = System::Drawing::Point(200, 280);
+			this->errorLabel->Location = System::Drawing::Point(200, 330);
 			this->errorLabel->Name = L"errorLabel";
 			this->errorLabel->Size = System::Drawing::Size(0, 17);
-			this->errorLabel->TabIndex = 6;
+			this->errorLabel->TabIndex = 9;
 
 			// pictureBox1
 			this->pictureBox1->Location = System::Drawing::Point(12, 12);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(100, 100);
-			this->pictureBox1->TabIndex = 7;
+			this->pictureBox1->TabIndex = 10;
 			this->pictureBox1->TabStop = false;
 
 			// LoginForm
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(650, 350);
+			this->ClientSize = System::Drawing::Size(650, 420);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->errorLabel);
 			this->Controls->Add(this->titleLabel);
 			this->Controls->Add(this->passwordLabel);
 			this->Controls->Add(this->usernameLabel);
+			this->Controls->Add(this->refreshCaptchaButton);
+			this->Controls->Add(this->captchaTextBox);
+			this->Controls->Add(this->captchaLabel);
 			this->Controls->Add(this->loginButton);
 			this->Controls->Add(this->passwordTextBox);
 			this->Controls->Add(this->usernameTextBox);
@@ -170,9 +236,14 @@ namespace HPSapp {
 			this->PerformLayout();
 		}
 
+	private: System::Void refreshCaptchaButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		GenerateNewCaptcha();
+	}
+
 	private: System::Void loginButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ username = usernameTextBox->Text;
 		String^ password = passwordTextBox->Text;
+		String^ captchaAnswer = captchaTextBox->Text;
 
 		if (String::IsNullOrEmpty(username) || String::IsNullOrEmpty(password)) {
 			errorLabel->Text = L"Username and password are required!";
@@ -180,6 +251,34 @@ namespace HPSapp {
 			return;
 		}
 
+		if (String::IsNullOrEmpty(captchaAnswer)) {
+			errorLabel->Text = L"Please solve the CAPTCHA!";
+			errorLabel->ForeColor = System::Drawing::Color::Red;
+			return;
+		}
+
+		// Verify CAPTCHA answer
+		int userAnswer;
+		try {
+			userAnswer = System::Int32::Parse(captchaAnswer);
+		}
+		catch (System::FormatException^) {
+			errorLabel->Text = L"CAPTCHA answer must be a number!";
+			errorLabel->ForeColor = System::Drawing::Color::Red;
+			captchaTextBox->Clear();
+			GenerateNewCaptcha();
+			return;
+		}
+
+		if (userAnswer != correctAnswer) {
+			errorLabel->Text = L"Incorrect CAPTCHA answer. Please try again!";
+			errorLabel->ForeColor = System::Drawing::Color::Red;
+			captchaTextBox->Clear();
+			GenerateNewCaptcha();
+			return;
+		}
+
+		// CAPTCHA passed - proceed with login
 		// Convert managed strings to unmanaged strings
 		std::string unmanaged_username = msclr::interop::marshal_as<std::string>(username);
 		std::string unmanaged_password = msclr::interop::marshal_as<std::string>(password);
@@ -199,6 +298,8 @@ namespace HPSapp {
 			errorLabel->ForeColor = System::Drawing::Color::Red;
 			usernameTextBox->Clear();
 			passwordTextBox->Clear();
+			captchaTextBox->Clear();
+			GenerateNewCaptcha();
 			return;
 		}
 
@@ -234,6 +335,8 @@ namespace HPSapp {
 		dbManager->Disconnect();
 		usernameTextBox->Clear();
 		passwordTextBox->Clear();
+		captchaTextBox->Clear();
+		GenerateNewCaptcha();
 	}
 
 	public:
