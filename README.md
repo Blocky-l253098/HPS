@@ -1,4 +1,4 @@
-# 🏥 Hospital Patient System (HPS)
+# 🏥 Hospital Management System
 
 A **Hospital Management System** built with **C++** and **Windows Forms (.NET/CLR)**, designed to streamline the day-to-day operations of a hospital — from patient registration to doctor management.
 
