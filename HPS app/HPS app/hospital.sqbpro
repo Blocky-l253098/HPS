@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="hospital.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2136"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Appointments" custom_title="0" dock_id="2" table="4,12:mainAppointments"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- 1. Users Table (Core Account Management)
+CREATE TABLE IF NOT EXISTS Users (
+    UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT UNIQUE NOT NULL,
+    Password TEXT NOT NULL,
+    Role TEXT NOT NULL -- 'Admin', 'Doctor', or 'Patient'
+);
+
+-- 2. Patients Table
+CREATE TABLE IF NOT EXISTS Patients (
+    PatientID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    Name TEXT NOT NULL,
+    History TEXT,
+    AssignedBed TEXT,
+    FOREIGN KEY(UserID) REFERENCES Users(UserID)
+);
+
+-- 3. Doctors Table
+CREATE TABLE IF NOT EXISTS Doctors (
+    DoctorID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    Name TEXT NOT NULL,
+    Specialty TEXT NOT NULL,
+    Salary REAL DEFAULT 0.0,
+    IsAvailable INTEGER DEFAULT 1, -- 1 for True, 0 for False
+    FOREIGN KEY(UserID) REFERENCES Users(UserID)
+);
+
+-- 4. Appointments Table (Scheduling &amp; Surgery Conflicts)
+CREATE TABLE IF NOT EXISTS Appointments (
+    AppointmentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PatientID INTEGER,
+    DoctorID INTEGER,
+    StartTime DATETIME NOT NULL,
+    EndTime DATETIME NOT NULL,
+    IsSurgery INTEGER DEFAULT 0, -- 1 for True, 0 for False
+    FOREIGN KEY(PatientID) REFERENCES Patients(PatientID),
+    FOREIGN KEY(DoctorID) REFERENCES Doctors(DoctorID)
+);
+
+-- 5. Medical Records Table
+CREATE TABLE IF NOT EXISTS MedicalRecords (
+    RecordID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PatientID INTEGER,
+    DoctorID INTEGER,
+    Diagnosis TEXT NOT NULL,
+    Symptoms TEXT,
+    Treatment TEXT,
+    DateRecorded DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(PatientID) REFERENCES Patients(PatientID),
+    FOREIGN KEY(DoctorID) REFERENCES Doctors(DoctorID)
+);
+
+-- 6. Prescriptions Table (Digital Prescription Generation)
+CREATE TABLE IF NOT EXISTS Prescriptions (
+    PrescriptionID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PatientID INTEGER,
+    DoctorID INTEGER,
+    MedicineDetails TEXT NOT NULL,
+    Instructions TEXT NOT NULL,
+    DateIssued DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(PatientID) REFERENCES Patients(PatientID),
+    FOREIGN KEY(DoctorID) REFERENCES Doctors(DoctorID)
+);
+
+-- 7. Payroll Table (Admin Payroll Management)
+CREATE TABLE IF NOT EXISTS Payroll (
+    PayrollID INTEGER PRIMARY KEY AUTOINCREMENT,
+    DoctorID INTEGER,
+    Amount REAL NOT NULL,
+    PaymentDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status TEXT DEFAULT 'Paid',
+    FOREIGN KEY(DoctorID) REFERENCES Doctors(DoctorID)
+);
+
+-- 8. Billing Table (Integrated Patient Billing)
+CREATE TABLE IF NOT EXISTS Billing (
+    BillID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PatientID INTEGER,
+    Amount REAL NOT NULL,
+    Paid INTEGER DEFAULT 0, -- 1 for Paid, 0 for Unpaid
+    BillDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(PatientID) REFERENCES Patients(PatientID)
+);
+
+-- 9. Beds &amp; Rooms Table (Resource Tracking)
+CREATE TABLE IF NOT EXISTS Beds (
+    BedID TEXT PRIMARY KEY,
+    RoomNumber TEXT NOT NULL,
+    Status TEXT DEFAULT 'Vacant' -- 'Vacant', 'Occupied', or 'Maintenance'
+);
+
+-- 10. Notices Table (Digital Notice Board)
+CREATE TABLE IF NOT EXISTS Notices (
+    NoticeID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title TEXT,
+    Message TEXT NOT NULL,
+    PostedBy TEXT,
+    DatePosted DATETIME DEFAULT CURRENT_TIMESTAMP
+);</sql><current_tab id="0"/></tab_sql></sqlb_project>

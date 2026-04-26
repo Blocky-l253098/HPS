@@ -26,7 +26,8 @@ CREATE TABLE Appointments(
     AppointmentID INTEGER PRIMARY KEY AUTOINCREMENT,
     PatientID INTEGER,
     DoctorID INTEGER,
-    Time TEXT,
+    StartTime TIME,
+    EndTime TIME,
     IsSurgury INTEGER DEFAULT FALSE,
     FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),
     FOREIGN KEY (DoctorID) REFERENCES Users(UserID)
