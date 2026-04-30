@@ -6,12 +6,21 @@ using namespace std;
 
 class Login {
 private:
+    int userID;
     string username;
     string password;
     string userRole;
 
 public:
-    Login() : username(""), password(""), userRole("None") {}
+    Login() : userID(-1), username(""), password(""), userRole("None") {}
+
+    void setUserID(int id) {
+        userID = id;
+    }
+
+    int getUserID() const {
+        return userID;
+    }
 
     void setUsername(string user) {
         username = user;
@@ -42,6 +51,7 @@ public:
     }
 
     void clearCredentials() {
+        userID = -1;
         username = "";
         password = "";
         userRole = "None";
