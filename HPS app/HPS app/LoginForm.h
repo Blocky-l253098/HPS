@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "DatabaseManager.h"
 #include "Login.h"
@@ -17,6 +17,7 @@ namespace HPSapp {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Drawing::Drawing2D;
 
 	public ref class LoginForm : public Form
 	{
@@ -28,12 +29,15 @@ namespace HPSapp {
 		int correctAnswer;
 		bool captchaPassed;
 
+	private: System::Windows::Forms::Panel^ mainPanel;
+	private: System::Windows::Forms::Panel^ formPanel;
 	private: System::Windows::Forms::TextBox^ usernameTextBox;
 	private: System::Windows::Forms::TextBox^ passwordTextBox;
 	private: System::Windows::Forms::Button^ loginButton;
 	private: System::Windows::Forms::Label^ usernameLabel;
 	private: System::Windows::Forms::Label^ passwordLabel;
 	private: System::Windows::Forms::Label^ titleLabel;
+	private: System::Windows::Forms::Label^ subtitleLabel;
 	private: System::Windows::Forms::Label^ errorLabel;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Label^ captchaLabel;
@@ -49,6 +53,7 @@ namespace HPSapp {
 			srand((unsigned)time(NULL));
 			InitializeComponent();
 			GenerateNewCaptcha();
+			ApplyModernStyle();
 		}
 
 	protected:
@@ -62,9 +67,77 @@ namespace HPSapp {
 			if (loginSession) delete loginSession;
 		}
 
-	private: System::ComponentModel::Container ^components;
+	private: System::ComponentModel::Container^ components;
 
 	private:
+		void ApplyModernStyle()
+		{
+			// Form background
+			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+
+			// Main Panel
+			mainPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+
+			// Form Panel - white card with subtle shadow effect via border
+			formPanel->BackColor = System::Drawing::Color::White;
+
+			// Title
+			titleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 18, System::Drawing::FontStyle::Bold));
+			titleLabel->ForeColor = System::Drawing::Color::FromArgb(4, 44, 83);
+
+			// Subtitle
+			subtitleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			subtitleLabel->ForeColor = System::Drawing::Color::FromArgb(136, 135, 128);
+
+			// Labels
+			usernameLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			usernameLabel->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
+
+			passwordLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			passwordLabel->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
+
+			captchaLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			captchaLabel->ForeColor = System::Drawing::Color::FromArgb(12, 68, 124);
+			captchaLabel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+
+			// TextBoxes
+			usernameTextBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			usernameTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
+			usernameTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			usernameTextBox->ForeColor = System::Drawing::Color::FromArgb(44, 44, 42);
+
+			passwordTextBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			passwordTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
+			passwordTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			passwordTextBox->ForeColor = System::Drawing::Color::FromArgb(44, 44, 42);
+
+			captchaTextBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			captchaTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
+			captchaTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			captchaTextBox->ForeColor = System::Drawing::Color::FromArgb(44, 44, 42);
+
+			// Refresh button
+			refreshCaptchaButton->BackColor = System::Drawing::Color::FromArgb(241, 239, 232);
+			refreshCaptchaButton->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
+			refreshCaptchaButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			refreshCaptchaButton->FlatStyle = FlatStyle::Flat;
+			refreshCaptchaButton->FlatAppearance->BorderSize = 1;
+			refreshCaptchaButton->FlatAppearance->BorderColor = System::Drawing::Color::FromArgb(211, 209, 199);
+			refreshCaptchaButton->Cursor = System::Windows::Forms::Cursors::Hand;
+
+			// Error label
+			errorLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9));
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
+
+			// Login button
+			loginButton->BackColor = System::Drawing::Color::FromArgb(24, 95, 165);
+			loginButton->ForeColor = System::Drawing::Color::White;
+			loginButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11, System::Drawing::FontStyle::Bold));
+			loginButton->FlatStyle = FlatStyle::Flat;
+			loginButton->FlatAppearance->BorderSize = 0;
+			loginButton->Cursor = System::Windows::Forms::Cursors::Hand;
+		}
+
 		void GenerateNewCaptcha()
 		{
 			captchaNum1 = rand() % 50 + 1;
@@ -72,7 +145,7 @@ namespace HPSapp {
 			correctAnswer = captchaNum1 + captchaNum2;
 			captchaPassed = false;
 
-			String^ captchaQuestion = "What is " + captchaNum1.ToString() + " + " + captchaNum2.ToString() + " ?";
+			String^ captchaQuestion = "  What is " + captchaNum1.ToString() + " + " + captchaNum2.ToString() + " ?";
 			captchaLabel->Text = captchaQuestion;
 			captchaTextBox->Clear();
 			captchaTextBox->Focus();
@@ -81,160 +154,184 @@ namespace HPSapp {
 	private:
 		void InitializeComponent(void)
 		{
-			this->usernameTextBox = (gcnew System::Windows::Forms::TextBox());
-			this->passwordTextBox = (gcnew System::Windows::Forms::TextBox());
-			this->loginButton = (gcnew System::Windows::Forms::Button());
-			this->usernameLabel = (gcnew System::Windows::Forms::Label());
-			this->passwordLabel = (gcnew System::Windows::Forms::Label());
+			this->mainPanel = (gcnew System::Windows::Forms::Panel());
+			this->formPanel = (gcnew System::Windows::Forms::Panel());
 			this->titleLabel = (gcnew System::Windows::Forms::Label());
-			this->errorLabel = (gcnew System::Windows::Forms::Label());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->subtitleLabel = (gcnew System::Windows::Forms::Label());
+			this->usernameLabel = (gcnew System::Windows::Forms::Label());
+			this->usernameTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->passwordLabel = (gcnew System::Windows::Forms::Label());
+			this->passwordTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->captchaLabel = (gcnew System::Windows::Forms::Label());
 			this->captchaTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->refreshCaptchaButton = (gcnew System::Windows::Forms::Button());
+			this->errorLabel = (gcnew System::Windows::Forms::Label());
+			this->loginButton = (gcnew System::Windows::Forms::Button());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 
-			// usernameTextBox
-			this->usernameTextBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->usernameTextBox->Location = System::Drawing::Point(200, 120);
-			this->usernameTextBox->Name = L"usernameTextBox";
-			this->usernameTextBox->Size = System::Drawing::Size(250, 26);
-			this->usernameTextBox->TabIndex = 0;
+			// ── mainPanel ──────────────────────────────────────────────
+			this->mainPanel->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->mainPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			this->mainPanel->Name = L"mainPanel";
 
-			// passwordTextBox
-			this->passwordTextBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->passwordTextBox->Location = System::Drawing::Point(200, 170);
+			// ── formPanel (white card) ─────────────────────────────────
+			this->formPanel->BackColor = System::Drawing::Color::White;
+			this->formPanel->Location = System::Drawing::Point(70, 30);
+			this->formPanel->Name = L"formPanel";
+			this->formPanel->Size = System::Drawing::Size(380, 540);
+			this->formPanel->TabIndex = 0;
+
+			// ── titleLabel ────────────────────────────────────────────
+			this->titleLabel->AutoSize = false;
+			this->titleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 18, System::Drawing::FontStyle::Bold));
+			this->titleLabel->ForeColor = System::Drawing::Color::FromArgb(4, 44, 83);
+			this->titleLabel->Location = System::Drawing::Point(30, 28);
+			this->titleLabel->Name = L"titleLabel";
+			this->titleLabel->Size = System::Drawing::Size(320, 36);
+			this->titleLabel->Text = L"Hospital Management";
+			this->titleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+
+			// ── subtitleLabel ─────────────────────────────────────────
+			this->subtitleLabel->AutoSize = false;
+			this->subtitleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			this->subtitleLabel->ForeColor = System::Drawing::Color::FromArgb(136, 135, 128);
+			this->subtitleLabel->Location = System::Drawing::Point(30, 66);
+			this->subtitleLabel->Name = L"subtitleLabel";
+			this->subtitleLabel->Size = System::Drawing::Size(320, 20);
+			this->subtitleLabel->Text = L"Sign in to your account";
+			this->subtitleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+
+			// ── usernameLabel ─────────────────────────────────────────
+			this->usernameLabel->AutoSize = true;
+			this->usernameLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->usernameLabel->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
+			this->usernameLabel->Location = System::Drawing::Point(30, 112);
+			this->usernameLabel->Name = L"usernameLabel";
+			this->usernameLabel->Text = L"USERNAME";
+			this->usernameLabel->TabIndex = 5;
+
+			// ── usernameTextBox ───────────────────────────────────────
+			this->usernameTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			this->usernameTextBox->Location = System::Drawing::Point(30, 132);
+			this->usernameTextBox->Name = L"usernameTextBox";
+			this->usernameTextBox->Size = System::Drawing::Size(320, 30);
+			this->usernameTextBox->TabIndex = 0;
+			this->usernameTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
+
+			// ── passwordLabel ─────────────────────────────────────────
+			this->passwordLabel->AutoSize = true;
+			this->passwordLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->passwordLabel->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
+			this->passwordLabel->Location = System::Drawing::Point(30, 186);
+			this->passwordLabel->Name = L"passwordLabel";
+			this->passwordLabel->Text = L"PASSWORD";
+			this->passwordLabel->TabIndex = 6;
+
+			// ── passwordTextBox ───────────────────────────────────────
+			this->passwordTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			this->passwordTextBox->Location = System::Drawing::Point(30, 206);
 			this->passwordTextBox->Name = L"passwordTextBox";
 			this->passwordTextBox->PasswordChar = '*';
-			this->passwordTextBox->Size = System::Drawing::Size(250, 26);
+			this->passwordTextBox->Size = System::Drawing::Size(320, 30);
 			this->passwordTextBox->TabIndex = 1;
+			this->passwordTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
 
-			// captchaLabel
-			this->captchaLabel->AutoSize = true;
-			this->captchaLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->captchaLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->captchaLabel->Location = System::Drawing::Point(200, 210);
+			// ── captchaLabel (shows the question) ────────────────────
+			this->captchaLabel->AutoSize = false;
+			this->captchaLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->captchaLabel->ForeColor = System::Drawing::Color::FromArgb(12, 68, 124);
+			this->captchaLabel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			this->captchaLabel->Location = System::Drawing::Point(30, 260);
 			this->captchaLabel->Name = L"captchaLabel";
-			this->captchaLabel->Size = System::Drawing::Size(100, 18);
-			this->captchaLabel->TabIndex = 8;
-			this->captchaLabel->Text = L"CAPTCHA:";
-			this->captchaLabel->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(240)), static_cast<System::Int32>(static_cast<System::Byte>(240)), static_cast<System::Int32>(static_cast<System::Byte>(240)));
-			this->captchaLabel->Padding = System::Windows::Forms::Padding(5);
+			this->captchaLabel->Size = System::Drawing::Size(320, 26);
+			this->captchaLabel->Text = L"  Security Question: 0 + 0 = ?";
+			this->captchaLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->captchaLabel->Padding = System::Windows::Forms::Padding(6, 0, 0, 0);
 
-			// captchaTextBox
-			this->captchaTextBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->captchaTextBox->Location = System::Drawing::Point(200, 235);
+			// ── captchaTextBox ────────────────────────────────────────
+			this->captchaTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			this->captchaTextBox->Location = System::Drawing::Point(30, 296);
 			this->captchaTextBox->Name = L"captchaTextBox";
-			this->captchaTextBox->Size = System::Drawing::Size(180, 26);
+			this->captchaTextBox->Size = System::Drawing::Size(210, 30);
 			this->captchaTextBox->TabIndex = 2;
+			this->captchaTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
 
-			// refreshCaptchaButton
-			this->refreshCaptchaButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(200)), static_cast<System::Int32>(static_cast<System::Byte>(200)), static_cast<System::Int32>(static_cast<System::Byte>(200)));
-			this->refreshCaptchaButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->refreshCaptchaButton->ForeColor = System::Drawing::Color::Black;
-			this->refreshCaptchaButton->Location = System::Drawing::Point(390, 235);
+			// ── refreshCaptchaButton ──────────────────────────────────
+			this->refreshCaptchaButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->refreshCaptchaButton->Location = System::Drawing::Point(248, 296);
 			this->refreshCaptchaButton->Name = L"refreshCaptchaButton";
-			this->refreshCaptchaButton->Size = System::Drawing::Size(60, 26);
+			this->refreshCaptchaButton->Size = System::Drawing::Size(102, 30);
 			this->refreshCaptchaButton->TabIndex = 3;
-			this->refreshCaptchaButton->Text = L"?? New";
+			this->refreshCaptchaButton->Text = L"↻ New";
 			this->refreshCaptchaButton->UseVisualStyleBackColor = false;
 			this->refreshCaptchaButton->Click += gcnew System::EventHandler(this, &LoginForm::refreshCaptchaButton_Click);
 
-			// loginButton
-			this->loginButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(102)), static_cast<System::Int32>(static_cast<System::Byte>(204)));
-			this->loginButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->loginButton->ForeColor = System::Drawing::Color::White;
-			this->loginButton->Location = System::Drawing::Point(200, 280);
+			// ── errorLabel ────────────────────────────────────────────
+			this->errorLabel->AutoSize = false;
+			this->errorLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9));
+			this->errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
+			this->errorLabel->Location = System::Drawing::Point(30, 344);
+			this->errorLabel->Name = L"errorLabel";
+			this->errorLabel->Size = System::Drawing::Size(320, 20);
+			this->errorLabel->Text = L"";
+			this->errorLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+
+			// ── loginButton ───────────────────────────────────────────
+			this->loginButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11, System::Drawing::FontStyle::Bold));
+			this->loginButton->Location = System::Drawing::Point(30, 374);
 			this->loginButton->Name = L"loginButton";
-			this->loginButton->Size = System::Drawing::Size(250, 40);
+			this->loginButton->Size = System::Drawing::Size(320, 44);
 			this->loginButton->TabIndex = 4;
-			this->loginButton->Text = L"Login";
+			this->loginButton->Text = L"SIGN IN";
 			this->loginButton->UseVisualStyleBackColor = false;
 			this->loginButton->Click += gcnew System::EventHandler(this, &LoginForm::loginButton_Click);
 
-			// usernameLabel
-			this->usernameLabel->AutoSize = true;
-			this->usernameLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->usernameLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->usernameLabel->Location = System::Drawing::Point(200, 95);
-			this->usernameLabel->Name = L"usernameLabel";
-			this->usernameLabel->Size = System::Drawing::Size(81, 18);
-			this->usernameLabel->TabIndex = 5;
-			this->usernameLabel->Text = L"Username:";
-
-			// passwordLabel
-			this->passwordLabel->AutoSize = true;
-			this->passwordLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->passwordLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->passwordLabel->Location = System::Drawing::Point(200, 145);
-			this->passwordLabel->Name = L"passwordLabel";
-			this->passwordLabel->Size = System::Drawing::Size(76, 18);
-			this->passwordLabel->TabIndex = 6;
-			this->passwordLabel->Text = L"Password:";
-
-			// titleLabel
-			this->titleLabel->AutoSize = true;
-			this->titleLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->titleLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(102)), static_cast<System::Int32>(static_cast<System::Byte>(204)));
-			this->titleLabel->Location = System::Drawing::Point(150, 20);
-			this->titleLabel->Name = L"titleLabel";
-			this->titleLabel->Size = System::Drawing::Size(350, 31);
-			this->titleLabel->TabIndex = 7;
-			this->titleLabel->Text = L"Hospital Management System";
-
-			// errorLabel
-			this->errorLabel->AutoSize = true;
-			this->errorLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->errorLabel->ForeColor = System::Drawing::Color::Red;
-			this->errorLabel->Location = System::Drawing::Point(200, 330);
-			this->errorLabel->Name = L"errorLabel";
-			this->errorLabel->Size = System::Drawing::Size(0, 17);
-			this->errorLabel->TabIndex = 9;
-
-			// pictureBox1
-			this->pictureBox1->Location = System::Drawing::Point(12, 12);
+			// ── pictureBox1 (hidden, reserved) ────────────────────────
+			this->pictureBox1->Location = System::Drawing::Point(30, 430);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(100, 100);
+			this->pictureBox1->Size = System::Drawing::Size(320, 1);
 			this->pictureBox1->TabIndex = 10;
 			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Visible = false;
 
-			// LoginForm
+			// ── Form ──────────────────────────────────────────────────
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(650, 420);
-			this->Controls->Add(this->pictureBox1);
-			this->Controls->Add(this->errorLabel);
-			this->Controls->Add(this->titleLabel);
-			this->Controls->Add(this->passwordLabel);
-			this->Controls->Add(this->usernameLabel);
-			this->Controls->Add(this->refreshCaptchaButton);
-			this->Controls->Add(this->captchaTextBox);
-			this->Controls->Add(this->captchaLabel);
-			this->Controls->Add(this->loginButton);
-			this->Controls->Add(this->passwordTextBox);
-			this->Controls->Add(this->usernameTextBox);
+			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			this->ClientSize = System::Drawing::Size(520, 600);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->Name = L"LoginForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"HPS - Login";
+			this->Text = L"HPS - Hospital Management System";
+
+			// ── Add controls to formPanel ─────────────────────────────
+			this->formPanel->Controls->Add(this->titleLabel);
+			this->formPanel->Controls->Add(this->subtitleLabel);
+			this->formPanel->Controls->Add(this->usernameLabel);
+			this->formPanel->Controls->Add(this->usernameTextBox);
+			this->formPanel->Controls->Add(this->passwordLabel);
+			this->formPanel->Controls->Add(this->passwordTextBox);
+			this->formPanel->Controls->Add(this->captchaLabel);
+			this->formPanel->Controls->Add(this->captchaTextBox);
+			this->formPanel->Controls->Add(this->refreshCaptchaButton);
+			this->formPanel->Controls->Add(this->errorLabel);
+			this->formPanel->Controls->Add(this->loginButton);
+			this->formPanel->Controls->Add(this->pictureBox1);
+
+			// ── Add formPanel to mainPanel, mainPanel to Form ─────────
+			this->mainPanel->Controls->Add(this->formPanel);
+			this->Controls->Add(this->mainPanel);
+
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 		}
+
+		// ── Event Handlers (backend untouched) ────────────────────────────
 
 	private: System::Void refreshCaptchaButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		GenerateNewCaptcha();
@@ -247,55 +344,50 @@ namespace HPSapp {
 
 		if (String::IsNullOrEmpty(username) || String::IsNullOrEmpty(password)) {
 			errorLabel->Text = L"Username and password are required!";
-			errorLabel->ForeColor = System::Drawing::Color::Red;
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
 			return;
 		}
 
 		if (String::IsNullOrEmpty(captchaAnswer)) {
-			errorLabel->Text = L"Please solve the CAPTCHA!";
-			errorLabel->ForeColor = System::Drawing::Color::Red;
+			errorLabel->Text = L"Please answer the security question!";
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
 			return;
 		}
 
-		// Verify CAPTCHA answer
 		int userAnswer;
 		try {
 			userAnswer = System::Int32::Parse(captchaAnswer);
 		}
 		catch (System::FormatException^) {
-			errorLabel->Text = L"CAPTCHA answer must be a number!";
-			errorLabel->ForeColor = System::Drawing::Color::Red;
+			errorLabel->Text = L"Security answer must be a number!";
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
 			captchaTextBox->Clear();
 			GenerateNewCaptcha();
 			return;
 		}
 
 		if (userAnswer != correctAnswer) {
-			errorLabel->Text = L"Incorrect CAPTCHA answer. Please try again!";
-			errorLabel->ForeColor = System::Drawing::Color::Red;
+			errorLabel->Text = L"Incorrect security answer. Please try again!";
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
 			captchaTextBox->Clear();
 			GenerateNewCaptcha();
 			return;
 		}
 
-		// CAPTCHA passed - proceed with login
-		// Convert managed strings to unmanaged strings
 		std::string unmanaged_username = msclr::interop::marshal_as<std::string>(username);
 		std::string unmanaged_password = msclr::interop::marshal_as<std::string>(password);
 
-		// Connect to database if not already connected
 		if (!dbManager->Connect()) {
 			errorLabel->Text = L"Database connection failed!";
-			errorLabel->ForeColor = System::Drawing::Color::Red;
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
 			return;
 		}
 
-		// Validate user credentials
 		std::string role = dbManager->ValidateUser(unmanaged_username, unmanaged_password);
 
 		if (role == "None") {
 			errorLabel->Text = L"Invalid username or password!";
-			errorLabel->ForeColor = System::Drawing::Color::Red;
+			errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
 			usernameTextBox->Clear();
 			passwordTextBox->Clear();
 			captchaTextBox->Clear();
@@ -303,14 +395,12 @@ namespace HPSapp {
 			return;
 		}
 
-		// Login successful
 		loginSession->setUsername(unmanaged_username);
 		loginSession->setPassword(unmanaged_password);
 		loginSession->setUserRole(role);
 
 		errorLabel->Text = "";
 
-		// Open appropriate dashboard based on role
 		System::String^ managedRole = gcnew System::String(role.c_str());
 
 		if (managedRole == "Admin") {
