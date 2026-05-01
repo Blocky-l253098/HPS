@@ -221,7 +221,12 @@ namespace HPSapp {
 		String^ startFull = dateStr + " " + timeTextBox->Text->Trim();
 
 		// Appointment EndTime = StartTime + 1 hour (default)
-		String^ endFull = dateStr + " " + timeTextBox->Text->Trim();
+		DateTime parsedTime;
+		if (!DateTime::TryParse(timeTextBox->Text->Trim(), parsedTime)) {
+			MessageBox::Show("Invalid time format!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		String^ endFull = dateStr + " " + parsedTime.AddHours(1).ToString("HH:mm");
 
 		std::string startStd = msclr::interop::marshal_as<std::string>(startFull);
 		std::string endStd = msclr::interop::marshal_as<std::string>(endFull);
@@ -241,7 +246,8 @@ namespace HPSapp {
 			timeTextBox->Text = "";
 		}
 		else {
-			MessageBox::Show("Failed to book appointment. Please try again.", "Error",
+			String^ errMsg = gcnew String(dbManager->getLastError().c_str());
+			MessageBox::Show("Failed to book appointment. Error: " + errMsg, "Error",
 				MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 	}
@@ -261,7 +267,7 @@ namespace HPSapp {
 		int patientId = SessionManager::CurrentUserId;
 		std::string sql = "SELECT AppointmentID, DoctorID, StartTime FROM Appointments "
 			"WHERE PatientID = " + std::to_string(patientId) +
-			" AND IsSurgury = 0 ORDER BY StartTime ASC;";
+			" AND IsSurgery = 0 ORDER BY StartTime ASC;";
 
 		sqlite3_stmt* stmt;
 		if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {

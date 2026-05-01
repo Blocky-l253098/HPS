@@ -53,9 +53,7 @@ public:
 		return false;
 	}
 	bool CheckConflict(int doctorId, string StartTime, string EndTime, bool isSurgery) {
-		string oppositeType = isSurgery ? "0" : "1";
-		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorId=" + to_string(doctorId) + 
-					 " AND IsSurgery=" + oppositeType + 
+		string sql = "SELECT COUNT(*) FROM Appointments WHERE DoctorID=" + to_string(doctorId) + 
 					 " AND (StartTime < '" + EndTime + "' AND EndTime > '" + StartTime + "');";
 		int count = 0;
 		sqlite3_stmt* stmt;
@@ -76,9 +74,22 @@ public:
 		else {
 			surg = "0";
 		}
-		string sqlQuery = "INSERT INTO Appointments (PatientId, DoctorId, StartTime, EndTime, IsSurgery) VALUES (" + to_string(patientId) + ", " + to_string(doctorId) + ", '" + Starttime + "', '" + EndTime + "', " + surg + ");";
+		string sqlQuery = "INSERT INTO Appointments (PatientID, DoctorID, StartTime, EndTime, IsSurgury) VALUES (" + to_string(patientId) + ", " + to_string(doctorId) + ", '" + Starttime + "', '" + EndTime + "', " + surg + ");";
 
-		return (sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+		bool result = (sqlite3_exec(DB, sqlQuery.c_str(), nullptr, 0, &errorMessage) == SQLITE_OK);
+		if (!result && errorMessage) {
+			cout << "SQLite Error: " << errorMessage << "\nSQL: " << sqlQuery << endl;
+			string fullErr = "SQLite Error: " + string(errorMessage) + "\nSQL: " + sqlQuery;
+			sqlite3_free(errorMessage);
+			errorMessage = new char[fullErr.length() + 1];
+			strcpy(errorMessage, fullErr.c_str());
+		}
+		return result;
+	}
+	
+	string getLastError() {
+		if (errorMessage) return string(errorMessage);
+		return "Unknown DB error";
 	}
 	bool GenerateBill(int patientId, double amount,bool paid) {
 		string sqlQuery = "INSERT INTO Billing (PatientId, Amount, Paid) VALUES (" + to_string(patientId) + ", " + to_string(amount) + "," + (paid ? "1" : "0") + ");";

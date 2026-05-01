@@ -5,7 +5,7 @@
 #include <msclr/marshal_cppstd.h>
 #include "AppointmentForm.h"
 #include "SurgeryForm.h"
-
+#include "BillingModule.h"
 namespace HPSapp
 {
 
@@ -201,8 +201,91 @@ namespace HPSapp
 			welcomeLabel->Text = "Welcome, " + username + " (Patient)!";
 		}
 
+	private:
+		String^ InputBox(String^ prompt) {
+			Form^ form = gcnew Form();
+			form->Text = "Input";
+			form->Width = 300;
+			form->Height = 150;
+			form->StartPosition = FormStartPosition::CenterParent;
+			form->TopMost = true;
+
+			Label^ label = gcnew Label();
+			label->Left = 20;
+			label->Top = 20;
+			label->Text = prompt;
+			label->Width = 250;
+
+			TextBox^ textBox = gcnew TextBox();
+			textBox->Left = 20;
+			textBox->Top = 50;
+			textBox->Width = 250;
+
+			Button^ okButton = gcnew Button();
+			okButton->Text = "OK";
+			okButton->Left = 120;
+			okButton->Top = 80;
+			okButton->DialogResult = System::Windows::Forms::DialogResult::OK;
+
+			form->AcceptButton = okButton;
+			form->Controls->Add(label);
+			form->Controls->Add(textBox);
+			form->Controls->Add(okButton);
+
+			form->ShowDialog();
+			return textBox->Text;
+		}
+
+	private: void ViewPatientRecords(String^ pIdStr) {
+		if (dbManager->Connect()) {
+			sqlite3_stmt* stmt;
+			std::string pId = msclr::interop::marshal_as<std::string>(pIdStr);
+
+			// Combined querying for Medical Records and Prescriptions
+			std::string medQuery = "SELECT Diagnosis, Symptoms, Treatment, DateRecorded FROM MedicalRecords WHERE PatientID=" + pId + ";";
+			std::string rxQuery = "SELECT MedicineDetails, Instructions, DateIssued FROM Prescriptions WHERE PatientID=" + pId + ";";
+
+			String^ recordLog = "--- YOUR MEDICAL RECORDS ---\n\n";
+
+			if (sqlite3_prepare_v2(dbManager->getDB(), medQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+				while (sqlite3_step(stmt) == SQLITE_ROW) {
+					String^ diag = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+					String^ symp = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+					String^ treat = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+					String^ date = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
+
+					recordLog += "[" + date + "]\n";
+					recordLog += "Diagnosis: " + diag + "\n";
+					recordLog += "Symptoms: " + symp + "\n";
+					recordLog += "Treatment: " + treat + "\n\n";
+				}
+			}
+			sqlite3_finalize(stmt);
+
+			recordLog += "\n--- YOUR PRESCRIPTIONS ---\n\n";
+			if (sqlite3_prepare_v2(dbManager->getDB(), rxQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+				while (sqlite3_step(stmt) == SQLITE_ROW) {
+					String^ meds = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+					String^ inst = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+					String^ rxDate = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+
+					recordLog += "[" + rxDate + "]\n";
+					recordLog += "Medication: " + meds + "\n";
+					recordLog += "Instructions: " + inst + "\n\n";
+				}
+			}
+			sqlite3_finalize(stmt);
+
+			MessageBox::Show(recordLog, "Full Medical Profile", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			dbManager->Disconnect();
+		}
+	}
+
 	private: System::Void viewRecordsButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("View Medical Records - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		String^ pIdStr = InputBox("Enter Your Patient ID:");
+		if (String::IsNullOrEmpty(pIdStr)) return;
+
+		ViewPatientRecords(pIdStr);
 	}
 
 	private: System::Void bookAppointmentButton_Click(System::Object^ sender, System::EventArgs^ e)
@@ -212,7 +295,8 @@ namespace HPSapp
 	}
 
 	private: System::Void viewBillButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("View Billing Information - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		HospitalManagment::BillingModule^ form1 = gcnew HospitalManagment::BillingModule();
+		form1->ShowDialog(); // Changed 'form' to 'form1'
 	}
 
 	private: System::Void logoutButton_Click(System::Object^ sender, System::EventArgs^ e)
