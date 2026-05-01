@@ -3,8 +3,6 @@
 #include "DatabaseManager.h"
 #include "Login.h"
 #include <msclr/marshal_cppstd.h>
-
-// New feature windows
 #include "BillingModule.h"
 #include "BedTrackingForm.h"
 #include "MyForm.h"
