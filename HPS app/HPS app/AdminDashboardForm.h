@@ -23,6 +23,7 @@ namespace HPSapp {
 		Login* currentUser;
 
 	private: System::Windows::Forms::Label^ welcomeLabel;
+	private: System::Windows::Forms::Button^ addAdminButton;
 	private: System::Windows::Forms::Button^ addPatientButton;
 	private: System::Windows::Forms::Button^ addDoctorButton;
 	private: System::Windows::Forms::Button^ viewPatientsButton;
@@ -61,6 +62,7 @@ namespace HPSapp {
 		void InitializeComponent(void)
 		{
 			this->welcomeLabel = (gcnew System::Windows::Forms::Label());
+			this->addAdminButton = (gcnew System::Windows::Forms::Button());
 			this->addPatientButton = (gcnew System::Windows::Forms::Button());
 			this->addDoctorButton = (gcnew System::Windows::Forms::Button());
 			this->viewPatientsButton = (gcnew System::Windows::Forms::Button());
@@ -97,11 +99,21 @@ namespace HPSapp {
 			this->welcomeLabel->Size = System::Drawing::Size(200, 18);
 			this->welcomeLabel->Text = L"Welcome, Admin!";
 
+			// --- FIRST ROW ---
+			// addAdminButton (NEW)
+			this->addAdminButton->BackColor = System::Drawing::Color::FromArgb(200, 0, 0);
+			this->addAdminButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
+			this->addAdminButton->ForeColor = System::Drawing::Color::White;
+			this->addAdminButton->Location = System::Drawing::Point(20, 100);
+			this->addAdminButton->Size = System::Drawing::Size(150, 40);
+			this->addAdminButton->Text = L"Add Admin";
+			this->addAdminButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::addAdminButton_Click);
+
 			// addPatientButton
 			this->addPatientButton->BackColor = System::Drawing::Color::FromArgb(0, 102, 204);
 			this->addPatientButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
 			this->addPatientButton->ForeColor = System::Drawing::Color::White;
-			this->addPatientButton->Location = System::Drawing::Point(20, 100);
+			this->addPatientButton->Location = System::Drawing::Point(180, 100);
 			this->addPatientButton->Size = System::Drawing::Size(150, 40);
 			this->addPatientButton->Text = L"Add Patient";
 			this->addPatientButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::addPatientButton_Click);
@@ -110,7 +122,7 @@ namespace HPSapp {
 			this->addDoctorButton->BackColor = System::Drawing::Color::FromArgb(0, 102, 204);
 			this->addDoctorButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
 			this->addDoctorButton->ForeColor = System::Drawing::Color::White;
-			this->addDoctorButton->Location = System::Drawing::Point(180, 100);
+			this->addDoctorButton->Location = System::Drawing::Point(340, 100);
 			this->addDoctorButton->Size = System::Drawing::Size(150, 40);
 			this->addDoctorButton->Text = L"Add Doctor";
 			this->addDoctorButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::addDoctorButton_Click);
@@ -119,7 +131,7 @@ namespace HPSapp {
 			this->viewPatientsButton->BackColor = System::Drawing::Color::FromArgb(0, 102, 204);
 			this->viewPatientsButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
 			this->viewPatientsButton->ForeColor = System::Drawing::Color::White;
-			this->viewPatientsButton->Location = System::Drawing::Point(340, 100);
+			this->viewPatientsButton->Location = System::Drawing::Point(500, 100);
 			this->viewPatientsButton->Size = System::Drawing::Size(150, 40);
 			this->viewPatientsButton->Text = L"View Patients";
 			this->viewPatientsButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::viewPatientsButton_Click);
@@ -128,7 +140,7 @@ namespace HPSapp {
 			this->viewDoctorsButton->BackColor = System::Drawing::Color::FromArgb(0, 204, 102);
 			this->viewDoctorsButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
 			this->viewDoctorsButton->ForeColor = System::Drawing::Color::White;
-			this->viewDoctorsButton->Location = System::Drawing::Point(500, 100);
+			this->viewDoctorsButton->Location = System::Drawing::Point(660, 100);
 			this->viewDoctorsButton->Size = System::Drawing::Size(150, 40);
 			this->viewDoctorsButton->Text = L"View Doctors";
 			this->viewDoctorsButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::viewDoctorsButton_Click);
@@ -162,30 +174,31 @@ namespace HPSapp {
 			this->billingButton->Text = L"Billing";
 			this->billingButton->Click += gcnew EventHandler(this, &AdminDashboardForm::billingButton_Click);
 
-			// logoutButton - REPOSITIONED TO END OF SECOND ROW
+			// logoutButton
 			this->logoutButton->BackColor = System::Drawing::Color::Red;
 			this->logoutButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
 			this->logoutButton->ForeColor = System::Drawing::Color::White;
-			this->logoutButton->Location = System::Drawing::Point(500, 150); // Now it follows Billing
+			this->logoutButton->Location = System::Drawing::Point(660, 150);
 			this->logoutButton->Size = System::Drawing::Size(150, 40);
 			this->logoutButton->Text = L"Logout";
 			this->logoutButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::logoutButton_Click);
 
 			// dataGridView
 			this->dataGridView->BackgroundColor = System::Drawing::Color::White;
-			this->dataGridView->Location = System::Drawing::Point(20, 210); // Lowered slightly to make room
+			this->dataGridView->Location = System::Drawing::Point(20, 210);
 			this->dataGridView->ReadOnly = true;
-			this->dataGridView->Size = System::Drawing::Size(760, 260);
+			this->dataGridView->Size = System::Drawing::Size(790, 260);
 
 			// AdminDashboardForm setup
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(810, 510);
+			this->ClientSize = System::Drawing::Size(830, 510);
 
 			// Adding controls
 			this->Controls->Add(this->titleLabel);
 			this->Controls->Add(this->welcomeLabel);
+			this->Controls->Add(this->addAdminButton);
 			this->Controls->Add(this->addPatientButton);
 			this->Controls->Add(this->addDoctorButton);
 			this->Controls->Add(this->viewPatientsButton);
@@ -193,7 +206,7 @@ namespace HPSapp {
 			this->Controls->Add(this->bedTrackingButton);
 			this->Controls->Add(this->noticeBoardButton);
 			this->Controls->Add(this->billingButton);
-			this->Controls->Add(this->logoutButton); // Logout is now added at the logical end
+			this->Controls->Add(this->logoutButton);
 			this->Controls->Add(this->dataGridView);
 
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
@@ -211,113 +224,295 @@ namespace HPSapp {
 			welcomeLabel->Text = "Welcome, " + username + " (Admin)!";
 		}
 
+	private: System::Void addAdminButton_Click(System::Object^ sender, System::EventArgs^ e) {
+		String^ adminUsername = InputBox("Enter Admin Username:");
+		if (String::IsNullOrEmpty(adminUsername)) return;
+
+		String^ adminPassword = InputBox("Enter Admin Password:");
+		if (String::IsNullOrEmpty(adminPassword)) return;
+
+		// Convert to unmanaged strings
+		std::string username = msclr::interop::marshal_as<std::string>(adminUsername);
+		std::string password = msclr::interop::marshal_as<std::string>(adminPassword);
+
+		// Connect to database
+		if (!dbManager->Connect()) {
+			MessageBox::Show("Failed to connect to database!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
+		// Check if username already exists
+		if (dbManager->UsernameExists(username)) {
+			MessageBox::Show("Username '" + adminUsername + "' already exists! Please choose a different username.", "Duplicate Username", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			dbManager->Disconnect();
+			return;
+		}
+
+		// Add admin user to database with role "Admin"
+		std::string role = "Admin";
+		if (dbManager->AddUsername(username, password, role)) {
+			MessageBox::Show(
+				"Admin account created successfully!\n\nUsername: " + adminUsername + "\nPassword: " + adminPassword + "\nRole: Admin",
+				"Admin Account Created",
+				MessageBoxButtons::OK,
+				MessageBoxIcon::Information
+			);
+		}
+		else {
+			MessageBox::Show("Failed to create admin account. Please try again.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		dbManager->Disconnect();
+	}
+
 	private: System::Void addPatientButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		String^ name = InputBox("Enter Patient Name:");
-		if (String::IsNullOrEmpty(name)) return;
-		// (Logic continues...)
+		String^ patientName = InputBox("Enter Patient Name:");
+		if (String::IsNullOrEmpty(patientName)) return;
+
+		String^ medicalHistory = InputBox("Enter Medical History:");
+		if (String::IsNullOrEmpty(medicalHistory)) medicalHistory = "None";
+
+		// Convert to unmanaged strings
+		std::string name = msclr::interop::marshal_as<std::string>(patientName);
+		std::string history = msclr::interop::marshal_as<std::string>(medicalHistory);
+
+		// Connect to database
+		if (!dbManager->Connect()) {
+			MessageBox::Show("Failed to connect to database!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
+		// Check if patient name already exists
+		if (dbManager->PatientNameExists(name)) {
+			MessageBox::Show("Patient '" + patientName + "' already exists in the system!", "Duplicate Entry", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			dbManager->Disconnect();
+			return;
+		}
+
+		// Add patient to database
+		if (dbManager->AddPatient(name, history)) {
+			MessageBox::Show("Patient '" + patientName + "' added successfully!", "Success", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			
+			// Ask admin if they want to create a login account for this patient
+			System::Windows::Forms::DialogResult result = MessageBox::Show(
+				"Do you want to create a login account for this patient?", 
+				"Create Login Account", 
+				MessageBoxButtons::YesNo, 
+				MessageBoxIcon::Question
+			);
+
+			if (result == System::Windows::Forms::DialogResult::Yes) {
+				// Prompt for username
+				String^ patientUsername = InputBox("Enter username for " + patientName + ":");
+				if (String::IsNullOrEmpty(patientUsername)) {
+					MessageBox::Show("Username cannot be empty! Login account not created.", "Warning", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+					dbManager->Disconnect();
+					return;
+				}
+
+				// Check if username already exists
+				std::string username_std = msclr::interop::marshal_as<std::string>(patientUsername);
+				if (dbManager->UsernameExists(username_std)) {
+					MessageBox::Show("Username '" + patientUsername + "' already exists! Please choose a different username.", "Duplicate Username", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+					dbManager->Disconnect();
+					return;
+				}
+
+				// Prompt for password
+				String^ patientPassword = InputBox("Enter password for " + patientName + ":");
+				if (String::IsNullOrEmpty(patientPassword)) {
+					MessageBox::Show("Password cannot be empty! Login account not created.", "Warning", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+					dbManager->Disconnect();
+					return;
+				}
+
+				// Convert to unmanaged strings
+				std::string username = msclr::interop::marshal_as<std::string>(patientUsername);
+				std::string password = msclr::interop::marshal_as<std::string>(patientPassword);
+				std::string role = "Patient";
+
+				// Add user account to database
+				if (dbManager->AddUsername(username, password, role)) {
+					MessageBox::Show(
+						"Login account created successfully!\n\nUsername: " + patientUsername + "\nPassword: " + patientPassword,
+						"Account Created",
+						MessageBoxButtons::OK,
+						MessageBoxIcon::Information
+					);
+				}
+				else {
+					MessageBox::Show("Failed to create login account. Please try again.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				}
+			}
+		}
+		else {
+			MessageBox::Show("Failed to add patient. Please try again.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		dbManager->Disconnect();
 	}
 
 	private: System::Void addDoctorButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		// (Logic continues...)
+		String^ doctorName = InputBox("Enter Doctor Name:");
+		if (String::IsNullOrEmpty(doctorName)) return;
+
+		String^ specialty = InputBox("Enter Specialty:");
+		if (String::IsNullOrEmpty(specialty)) specialty = "General";
+
+		String^ salary = InputBox("Enter Salary:");
+		if (String::IsNullOrEmpty(salary)) salary = "0";
+
+		// Convert to unmanaged strings
+		std::string name = msclr::interop::marshal_as<std::string>(doctorName);
+		std::string spec = msclr::interop::marshal_as<std::string>(specialty);
+		std::string sal = msclr::interop::marshal_as<std::string>(salary);
+
+		// Connect to database
+		if (!dbManager->Connect()) {
+			MessageBox::Show("Failed to connect to database!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
+		// Check if doctor name already exists
+		if (dbManager->DoctorNameExists(name)) {
+			MessageBox::Show("Doctor '" + doctorName + "' already exists in the system!", "Duplicate Entry", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			dbManager->Disconnect();
+			return;
+		}
+
+		// Add doctor to database (available by default = true)
+		if (dbManager->AddDoctor(name, spec, sal, true)) {
+			MessageBox::Show("Doctor '" + doctorName + "' added successfully!", "Success", MessageBoxButtons::OK, MessageBoxIcon::Information);
+			
+			// Ask admin if they want to create a login account for this doctor
+			System::Windows::Forms::DialogResult result = MessageBox::Show(
+				"Do you want to create a login account for this doctor?",
+				"Create Login Account",
+				MessageBoxButtons::YesNo,
+				MessageBoxIcon::Question
+			);
+
+			if (result == System::Windows::Forms::DialogResult::Yes) {
+				// Prompt for username
+				String^ doctorUsername = InputBox("Enter username for " + doctorName + ":");
+				if (String::IsNullOrEmpty(doctorUsername)) {
+					MessageBox::Show("Username cannot be empty! Login account not created.", "Warning", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+					dbManager->Disconnect();
+					return;
+				}
+
+				// Check if username already exists
+				std::string username_std = msclr::interop::marshal_as<std::string>(doctorUsername);
+				if (dbManager->UsernameExists(username_std)) {
+					MessageBox::Show("Username '" + doctorUsername + "' already exists! Please choose a different username.", "Duplicate Username", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+					dbManager->Disconnect();
+					return;
+				}
+
+				// Prompt for password
+				String^ doctorPassword = InputBox("Enter password for " + doctorName + ":");
+				if (String::IsNullOrEmpty(doctorPassword)) {
+					MessageBox::Show("Password cannot be empty! Login account not created.", "Warning", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+					dbManager->Disconnect();
+					return;
+				}
+
+				// Convert to unmanaged strings
+				std::string username = msclr::interop::marshal_as<std::string>(doctorUsername);
+				std::string password = msclr::interop::marshal_as<std::string>(doctorPassword);
+				std::string role = "Doctor";
+
+				// Add user account to database
+				if (dbManager->AddUsername(username, password, role)) {
+					MessageBox::Show(
+						"Login account created successfully!\n\nUsername: " + doctorUsername + "\nPassword: " + doctorPassword,
+						"Account Created",
+						MessageBoxButtons::OK,
+						MessageBoxIcon::Information
+					);
+				}
+				else {
+					MessageBox::Show("Failed to create login account. Please try again.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				}
+			}
+		}
+		else {
+			MessageBox::Show("Failed to add doctor. Please try again.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		dbManager->Disconnect();
 	}
 
 	private: System::Void viewPatientsButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (dbManager->Connect()) {
-			sqlite3_stmt* stmt;
-			std::string sqlQuery = "SELECT * FROM Patients";
-			
-			// Set up columns if not already set
-			if (dataGridView->ColumnCount == 0) {
-				dataGridView->Columns->Add("ID", "Patient ID");
-				dataGridView->Columns->Add("Name", "Name");
-				dataGridView->Columns->Add("History", "History");
-				// Assuming other generic fields, adapt if needed. SQLite typically returns dynamically.
-			}
-			
-			dataGridView->Rows->Clear(); // Clear existing rows
-			
-			if (sqlite3_prepare_v2(dbManager->getDB(), sqlQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
-				
-				// Dynamically build columns on the first row if we don't know the schema
-				int colCount = sqlite3_column_count(stmt);
-				if (dataGridView->ColumnCount != colCount) {
-					dataGridView->Columns->Clear();
-					for(int i = 0; i < colCount; i++) {
-						String^ colName = gcnew String(reinterpret_cast<const char*>(sqlite3_column_name(stmt, i)));
-						dataGridView->Columns->Add(colName, colName);
-					}
-				}
+		if (!dbManager->Connect()) {
+			MessageBox::Show("Failed to connect to database!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 
-				while (sqlite3_step(stmt) == SQLITE_ROW) {
-					cli::array<String^>^ row = gcnew cli::array<String^>(colCount);
-					for (int i = 0; i < colCount; i++) {
-						const unsigned char* val = sqlite3_column_text(stmt, i);
-						if (val != nullptr) {
-							row[i] = gcnew String(reinterpret_cast<const char*>(val));
-						} else {
-							row[i] = "";
-						}
-					}
-					dataGridView->Rows->Add(row);
-				}
-			} else {
-				MessageBox::Show("Failed to load patients.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		dataGridView->Rows->Clear();
+		dataGridView->Columns->Clear();
+
+		dataGridView->Columns->Add("PatientID", "Patient ID");
+		dataGridView->Columns->Add("Name", "Name");
+		dataGridView->Columns->Add("History", "Medical History");
+
+		sqlite3_stmt* stmt;
+		std::string query = "SELECT PatientID, Name, History FROM Patients;";
+
+		if (sqlite3_prepare_v2(dbManager->getDB(), query.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+			while (sqlite3_step(stmt) == SQLITE_ROW) {
+				int patientId = sqlite3_column_int(stmt, 0);
+				String^ name = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+				String^ history = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+
+				dataGridView->Rows->Add(patientId.ToString(), name, history);
 			}
-			
-			sqlite3_finalize(stmt);
-			dbManager->Disconnect();
-		} else {
-			MessageBox::Show("Database Connection Failed.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		sqlite3_finalize(stmt);
+		dbManager->Disconnect();
+
+		if (dataGridView->Rows->Count == 0) {
+			MessageBox::Show("No patients found in database.", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 
 	private: System::Void viewDoctorsButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (dbManager->Connect()) {
-			sqlite3_stmt* stmt;
-			std::string sqlQuery = "SELECT * FROM Doctors";
-			
-			if (dataGridView->ColumnCount == 0) {
-				dataGridView->Columns->Add("ID", "Doctor ID");
-				dataGridView->Columns->Add("Name", "Name");
-				dataGridView->Columns->Add("Specialty", "Specialty");
-				dataGridView->Columns->Add("Salary", "Salary");
-				dataGridView->Columns->Add("IsAvailable", "Available");
-			}
-			
-			dataGridView->Rows->Clear(); // Clear existing rows
-			
-			if (sqlite3_prepare_v2(dbManager->getDB(), sqlQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
-				
-				// Dynamically build columns on the first row if we don't know the schema
-				int colCount = sqlite3_column_count(stmt);
-				if (dataGridView->ColumnCount != colCount) {
-					dataGridView->Columns->Clear();
-					for(int i = 0; i < colCount; i++) {
-						String^ colName = gcnew String(reinterpret_cast<const char*>(sqlite3_column_name(stmt, i)));
-						dataGridView->Columns->Add(colName, colName);
-					}
-				}
+		if (!dbManager->Connect()) {
+			MessageBox::Show("Failed to connect to database!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 
-				while (sqlite3_step(stmt) == SQLITE_ROW) {
-					cli::array<String^>^ row = gcnew cli::array<String^>(colCount);
-					for (int i = 0; i < colCount; i++) {
-						const unsigned char* val = sqlite3_column_text(stmt, i);
-						if (val != nullptr) {
-							row[i] = gcnew String(reinterpret_cast<const char*>(val));
-						} else {
-							row[i] = "";
-						}
-					}
-					dataGridView->Rows->Add(row);
-				}
-			} else {
-				MessageBox::Show("Failed to load doctors.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		dataGridView->Rows->Clear();
+		dataGridView->Columns->Clear();
+
+		dataGridView->Columns->Add("DoctorID", "Doctor ID");
+		dataGridView->Columns->Add("Name", "Name");
+		dataGridView->Columns->Add("Specialty", "Specialty");
+		dataGridView->Columns->Add("Salary", "Salary");
+		dataGridView->Columns->Add("Available", "Available");
+
+		sqlite3_stmt* stmt;
+		std::string query = "SELECT DoctorID, Name, Specialty, Salary, IsAvailable FROM Doctors;";
+
+		if (sqlite3_prepare_v2(dbManager->getDB(), query.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+			while (sqlite3_step(stmt) == SQLITE_ROW) {
+				int doctorId = sqlite3_column_int(stmt, 0);
+				String^ name = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+				String^ specialty = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+				String^ salary = gcnew String(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
+				int isAvailable = sqlite3_column_int(stmt, 4);
+				String^ available = isAvailable ? "Yes" : "No";
+
+				dataGridView->Rows->Add(doctorId.ToString(), name, specialty, salary, available);
 			}
-			
-			sqlite3_finalize(stmt);
-			dbManager->Disconnect();
-		} else {
-			MessageBox::Show("Database Connection Failed.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		sqlite3_finalize(stmt);
+		dbManager->Disconnect();
+
+		if (dataGridView->Rows->Count == 0) {
+			MessageBox::Show("No doctors found in database.", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 	}
 
