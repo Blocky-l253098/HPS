@@ -3,8 +3,6 @@
 #include "DatabaseManager.h"
 #include "Login.h"
 #include <msclr/marshal_cppstd.h>
-
-// New feature windows
 #include "BillingModule.h"
 #include "BedTrackingForm.h"
 #include "MyForm.h"
@@ -99,7 +97,6 @@ namespace HPSapp {
 			this->welcomeLabel->Size = System::Drawing::Size(200, 18);
 			this->welcomeLabel->Text = L"Welcome, Admin!";
 
-			// --- FIRST ROW ---
 			// addPatientButton
 			this->addPatientButton->BackColor = System::Drawing::Color::FromArgb(0, 102, 204);
 			this->addPatientButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
@@ -225,11 +222,103 @@ namespace HPSapp {
 	}
 
 	private: System::Void viewPatientsButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("View Patients - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		if (dbManager->Connect()) {
+			sqlite3_stmt* stmt;
+			std::string sqlQuery = "SELECT * FROM Patients";
+			
+			// Set up columns if not already set
+			if (dataGridView->ColumnCount == 0) {
+				dataGridView->Columns->Add("ID", "Patient ID");
+				dataGridView->Columns->Add("Name", "Name");
+				dataGridView->Columns->Add("History", "History");
+				// Assuming other generic fields, adapt if needed. SQLite typically returns dynamically.
+			}
+			
+			dataGridView->Rows->Clear(); // Clear existing rows
+			
+			if (sqlite3_prepare_v2(dbManager->getDB(), sqlQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+				
+				// Dynamically build columns on the first row if we don't know the schema
+				int colCount = sqlite3_column_count(stmt);
+				if (dataGridView->ColumnCount != colCount) {
+					dataGridView->Columns->Clear();
+					for(int i = 0; i < colCount; i++) {
+						String^ colName = gcnew String(reinterpret_cast<const char*>(sqlite3_column_name(stmt, i)));
+						dataGridView->Columns->Add(colName, colName);
+					}
+				}
+
+				while (sqlite3_step(stmt) == SQLITE_ROW) {
+					cli::array<String^>^ row = gcnew cli::array<String^>(colCount);
+					for (int i = 0; i < colCount; i++) {
+						const unsigned char* val = sqlite3_column_text(stmt, i);
+						if (val != nullptr) {
+							row[i] = gcnew String(reinterpret_cast<const char*>(val));
+						} else {
+							row[i] = "";
+						}
+					}
+					dataGridView->Rows->Add(row);
+				}
+			} else {
+				MessageBox::Show("Failed to load patients.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+			
+			sqlite3_finalize(stmt);
+			dbManager->Disconnect();
+		} else {
+			MessageBox::Show("Database Connection Failed.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 
 	private: System::Void viewDoctorsButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		MessageBox::Show("View Doctors - Feature Coming Soon!", "Info", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		if (dbManager->Connect()) {
+			sqlite3_stmt* stmt;
+			std::string sqlQuery = "SELECT * FROM Doctors";
+			
+			if (dataGridView->ColumnCount == 0) {
+				dataGridView->Columns->Add("ID", "Doctor ID");
+				dataGridView->Columns->Add("Name", "Name");
+				dataGridView->Columns->Add("Specialty", "Specialty");
+				dataGridView->Columns->Add("Salary", "Salary");
+				dataGridView->Columns->Add("IsAvailable", "Available");
+			}
+			
+			dataGridView->Rows->Clear(); // Clear existing rows
+			
+			if (sqlite3_prepare_v2(dbManager->getDB(), sqlQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+				
+				// Dynamically build columns on the first row if we don't know the schema
+				int colCount = sqlite3_column_count(stmt);
+				if (dataGridView->ColumnCount != colCount) {
+					dataGridView->Columns->Clear();
+					for(int i = 0; i < colCount; i++) {
+						String^ colName = gcnew String(reinterpret_cast<const char*>(sqlite3_column_name(stmt, i)));
+						dataGridView->Columns->Add(colName, colName);
+					}
+				}
+
+				while (sqlite3_step(stmt) == SQLITE_ROW) {
+					cli::array<String^>^ row = gcnew cli::array<String^>(colCount);
+					for (int i = 0; i < colCount; i++) {
+						const unsigned char* val = sqlite3_column_text(stmt, i);
+						if (val != nullptr) {
+							row[i] = gcnew String(reinterpret_cast<const char*>(val));
+						} else {
+							row[i] = "";
+						}
+					}
+					dataGridView->Rows->Add(row);
+				}
+			} else {
+				MessageBox::Show("Failed to load doctors.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			}
+			
+			sqlite3_finalize(stmt);
+			dbManager->Disconnect();
+		} else {
+			MessageBox::Show("Database Connection Failed.", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
 	}
 
 	private: System::Void logoutButton_Click(System::Object^ sender, System::EventArgs^ e) {
