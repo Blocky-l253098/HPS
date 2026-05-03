@@ -180,7 +180,7 @@ namespace HPSapp {
 			this->Controls->Add(addPrescriptionButton);
 			this->Controls->Add(this->appointmentsGridView);
 			this->Controls->Add(this->logoutButton);
-			this->Controls->Add(this->updateStatusButton);
+		 this->Controls->Add(this->updateStatusButton);
 			this->Controls->Add(this->bookAppointmentButton);
 			this->Controls->Add(this->viewAppointmentsButton);
 			this->Controls->Add(this->welcomeLabel);

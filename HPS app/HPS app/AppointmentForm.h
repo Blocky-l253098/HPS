@@ -267,14 +267,15 @@ namespace HPSapp {
 		int patientId = SessionManager::CurrentUserId;
 		std::string sql = "SELECT AppointmentID, DoctorID, StartTime FROM Appointments "
 			"WHERE PatientID = " + std::to_string(patientId) +
-			" AND IsSurgery = 0 ORDER BY StartTime ASC;";
+			" ORDER BY StartTime ASC;";
 
 		sqlite3_stmt* stmt;
 		if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
 			while (sqlite3_step(stmt) == SQLITE_ROW) {
 				int appId = sqlite3_column_int(stmt, 0);
 				int docId = sqlite3_column_int(stmt, 1);
-				std::string time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+				const unsigned char* timeText = sqlite3_column_text(stmt, 2);
+				std::string time = timeText ? reinterpret_cast<const char*>(timeText) : "";
 
 				appointmentsGrid->Rows->Add(
 					appId.ToString(),
