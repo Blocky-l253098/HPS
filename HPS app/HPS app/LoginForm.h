@@ -392,12 +392,39 @@ namespace HPSapp {
 			passwordTextBox->Clear();
 			captchaTextBox->Clear();
 			GenerateNewCaptcha();
+			dbManager->Disconnect();
 			return;
+		}
+
+		// Database سے Doctor یا Patient کی ID fetch کریں
+		int userID = 0;
+		sqlite3_stmt* stmt;
+		
+		if (role == "Doctor") {
+			// Doctor کی ID لیں
+			std::string queryID = "SELECT DoctorID FROM Doctors WHERE Name='" + unmanaged_username + "' LIMIT 1;";
+			if (sqlite3_prepare_v2(dbManager->getDB(), queryID.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+				if (sqlite3_step(stmt) == SQLITE_ROW) {
+					userID = sqlite3_column_int(stmt, 0);
+				}
+				sqlite3_finalize(stmt);
+			}
+		}
+		else if (role == "Patient") {
+			// Patient کی ID لیں
+			std::string queryID = "SELECT PatientID FROM Patients WHERE Name='" + unmanaged_username + "' LIMIT 1;";
+			if (sqlite3_prepare_v2(dbManager->getDB(), queryID.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+				if (sqlite3_step(stmt) == SQLITE_ROW) {
+					userID = sqlite3_column_int(stmt, 0);
+				}
+				sqlite3_finalize(stmt);
+			}
 		}
 
 		loginSession->setUsername(unmanaged_username);
 		loginSession->setPassword(unmanaged_password);
 		loginSession->setUserRole(role);
+		loginSession->setUserID(userID);  // ✅ ID set کریں
 
 		errorLabel->Text = "";
 
