@@ -216,11 +216,11 @@ namespace HPSapp {
 
 		int patientId = SessionManager::CurrentUserId;
 
-		// Build time: "YYYY-MM-DD HH:MM"
+	
 		String^ dateStr = datePicker->Value.ToString("yyyy-MM-dd");
 		String^ startFull = dateStr + " " + timeTextBox->Text->Trim();
 
-		// Appointment EndTime = StartTime + 1 hour (default)
+
 		DateTime parsedTime;
 		if (!DateTime::TryParse(timeTextBox->Text->Trim(), parsedTime)) {
 			MessageBox::Show("Invalid time format!", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -231,14 +231,14 @@ namespace HPSapp {
 		std::string startStd = msclr::interop::marshal_as<std::string>(startFull);
 		std::string endStd = msclr::interop::marshal_as<std::string>(endFull);
 
-		// Check conflict
+
 		if (dbManager->CheckConflict(doctorId, startStd, endStd, false)) {
 			MessageBox::Show("This doctor is not available at this time!\nPlease choose a different time.",
 				"Conflict Detected", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
 
-		// Book appointment
+
 		if (dbManager->BookAppointment(patientId, doctorId, startStd, endStd, false)) {
 			MessageBox::Show("Appointment booked successfully!", "Success",
 				MessageBoxButtons::OK, MessageBoxIcon::Information);

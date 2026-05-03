@@ -9,24 +9,18 @@ namespace HPSapp {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Summary for MyForm
-	/// </summary>
+	
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	public:
 		MainForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			
 		}
 
 	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
+	
 		~MainForm()
 		{
 			if (components)
@@ -195,8 +189,7 @@ namespace HPSapp {
 		}
 
 	private: System::Void btnAppointments_Click(System::Object^ sender, System::EventArgs^ e) {
-		// This is what Zahab will give you later
-		// loadScreen(gcnew ZahabAppointmentControl()); 
+		
 	}
 #pragma endregion
 	private: System::Void panel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {

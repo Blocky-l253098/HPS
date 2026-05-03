@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "DatabaseManager.h"
 #include "Login.h"
@@ -19,12 +19,31 @@ namespace HPSapp {
 		DatabaseManager* dbManager;
 		Login* currentUser;
 
+		
+	private: System::Windows::Forms::Panel^ sidebarPanel;
+	private: System::Windows::Forms::Panel^ contentPanel;
+	private: System::Windows::Forms::Panel^ headerPanel;
+	private: System::Windows::Forms::Panel^ logoPanel;
+
+	private: System::Windows::Forms::Label^ logoLabel;
+	private: System::Windows::Forms::Label^ logoSubLabel;
+	private: System::Windows::Forms::Label^ sidebarDivider1;
+	private: System::Windows::Forms::Label^ sidebarDivider2;
+	private: System::Windows::Forms::Label^ sectionLabel1;
+	private: System::Windows::Forms::Label^ sectionLabel2;
+
 	private: System::Windows::Forms::Label^ welcomeLabel;
+	private: System::Windows::Forms::Label^ doctorIDLabel;
+	private: System::Windows::Forms::Label^ titleLabel;
+	private: System::Windows::Forms::Label^ contentTitleLabel;
+
 	private: System::Windows::Forms::Button^ viewAppointmentsButton;
 	private: System::Windows::Forms::Button^ bookAppointmentButton;
 	private: System::Windows::Forms::Button^ updateStatusButton;
+	private: System::Windows::Forms::Button^ addRecordButton;
+	private: System::Windows::Forms::Button^ addPrescriptionButton;
 	private: System::Windows::Forms::Button^ logoutButton;
-	private: System::Windows::Forms::Label^ titleLabel;
+
 	private: System::Windows::Forms::DataGridView^ appointmentsGridView;
 
 	public:
@@ -39,172 +58,283 @@ namespace HPSapp {
 	protected:
 		~DoctorDashboardForm()
 		{
-			if (components)
-			{
-				delete components;
-			}
-			if (dbManager) delete dbManager;
+			if (components) delete components;
+			if (dbManager)  delete dbManager;
 		}
 
 	private: System::ComponentModel::Container^ components;
 
+		  
 	private:
+		Button^ MakeSidebarButton(String^ text, String^ icon, int yPos)
+		{
+			Button^ btn = gcnew Button();
+			btn->Text = icon + "  " + text;
+			btn->Location = System::Drawing::Point(12, yPos);
+			btn->Size = System::Drawing::Size(196, 40);
+			btn->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			btn->ForeColor = System::Drawing::Color::FromArgb(44, 44, 42);
+			btn->FlatStyle = FlatStyle::Flat;
+			btn->FlatAppearance->BorderSize = 0;
+			btn->FlatAppearance->MouseOverBackColor =
+				System::Drawing::Color::FromArgb(207, 226, 245);
+			btn->FlatAppearance->MouseDownBackColor =
+				System::Drawing::Color::FromArgb(180, 212, 240);
+			btn->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular));
+			btn->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			btn->Padding = System::Windows::Forms::Padding(10, 0, 0, 0);
+			btn->Cursor = System::Windows::Forms::Cursors::Hand;
+			btn->TabStop = false;
+			return btn;
+		}
+
 		void InitializeComponent(void)
 		{
-			this->welcomeLabel = (gcnew System::Windows::Forms::Label());
-			this->viewAppointmentsButton = (gcnew System::Windows::Forms::Button());
-			this->bookAppointmentButton = (gcnew System::Windows::Forms::Button());
-			this->updateStatusButton = (gcnew System::Windows::Forms::Button());
-			this->logoutButton = (gcnew System::Windows::Forms::Button());
-			this->titleLabel = (gcnew System::Windows::Forms::Label());
-			this->appointmentsGridView = (gcnew System::Windows::Forms::DataGridView());
+			
+			this->sidebarPanel = (gcnew Panel());
+			this->contentPanel = (gcnew Panel());
+			this->headerPanel = (gcnew Panel());
+			this->logoPanel = (gcnew Panel());
+
+			
+			this->logoLabel = (gcnew Label());
+			this->logoSubLabel = (gcnew Label());
+			this->sidebarDivider1 = (gcnew Label());
+			this->sidebarDivider2 = (gcnew Label());
+			this->sectionLabel1 = (gcnew Label());
+			this->sectionLabel2 = (gcnew Label());
+			this->welcomeLabel = (gcnew Label());
+			this->doctorIDLabel = (gcnew Label());
+			this->titleLabel = (gcnew Label());
+			this->contentTitleLabel = (gcnew Label());
+
+			
+			this->viewAppointmentsButton = MakeSidebarButton(L"View Appointments", L"◉", 108);
+			this->bookAppointmentButton = MakeSidebarButton(L"Book Appointment", L"✚", 152);
+			this->updateStatusButton = MakeSidebarButton(L"Update Availability", L"↻", 196);
+			this->addRecordButton = MakeSidebarButton(L"Log Medical Record", L"▣", 290);
+			this->addPrescriptionButton = MakeSidebarButton(L"Write Prescription", L"✎", 334);
+			this->logoutButton = (gcnew Button());
+
+			
+			this->appointmentsGridView = (gcnew DataGridView());
+
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->appointmentsGridView))->BeginInit();
 			this->SuspendLayout();
 
-			// titleLabel
-			this->titleLabel->AutoSize = true;
-			this->titleLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->titleLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(102)), static_cast<System::Int32>(static_cast<System::Byte>(204)));
-			this->titleLabel->Location = System::Drawing::Point(20, 20);
-			this->titleLabel->Name = L"titleLabel";
-			this->titleLabel->Size = System::Drawing::Size(300, 29);
-			this->titleLabel->TabIndex = 0;
-			this->titleLabel->Text = L"Doctor Dashboard";
+		
+			this->sidebarPanel->BackColor = System::Drawing::Color::White;
+			this->sidebarPanel->Location = System::Drawing::Point(0, 0);
+			this->sidebarPanel->Size = System::Drawing::Size(220, 680);
+			this->sidebarPanel->Name = L"sidebarPanel";
 
-			// welcomeLabel
-			this->welcomeLabel->AutoSize = true;
-			this->welcomeLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->welcomeLabel->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)));
-			this->welcomeLabel->Location = System::Drawing::Point(20, 60);
-			this->welcomeLabel->Name = L"welcomeLabel";
-			this->welcomeLabel->Size = System::Drawing::Size(200, 18);
-			this->welcomeLabel->TabIndex = 1;
-			this->welcomeLabel->Text = L"Welcome, Doctor!";
+			this->logoPanel->BackColor = System::Drawing::Color::FromArgb(24, 95, 165);
+			this->logoPanel->Location = System::Drawing::Point(0, 0);
+			this->logoPanel->Size = System::Drawing::Size(220, 72);
 
-			// viewAppointmentsButton
-			this->viewAppointmentsButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(102)), static_cast<System::Int32>(static_cast<System::Byte>(204)));
-			this->viewAppointmentsButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->viewAppointmentsButton->ForeColor = System::Drawing::Color::White;
-			this->viewAppointmentsButton->Location = System::Drawing::Point(20, 100);
-			this->viewAppointmentsButton->Name = L"viewAppointmentsButton";
-			this->viewAppointmentsButton->Size = System::Drawing::Size(150, 40);
-			this->viewAppointmentsButton->TabIndex = 2;
-			this->viewAppointmentsButton->Text = L"View Appointments";
-			this->viewAppointmentsButton->UseVisualStyleBackColor = false;
-			this->viewAppointmentsButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::viewAppointmentsButton_Click);
+			this->logoLabel->AutoSize = false;
+			this->logoLabel->Text = L"HPS Hospital";
+			this->logoLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 13, System::Drawing::FontStyle::Bold));
+			this->logoLabel->ForeColor = System::Drawing::Color::White;
+			this->logoLabel->Location = System::Drawing::Point(16, 12);
+			this->logoLabel->Size = System::Drawing::Size(190, 24);
+			this->logoLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 
-			// bookAppointmentButton
-			this->bookAppointmentButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(102)), static_cast<System::Int32>(static_cast<System::Byte>(204)));
-			this->bookAppointmentButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->bookAppointmentButton->ForeColor = System::Drawing::Color::White;
-			this->bookAppointmentButton->Location = System::Drawing::Point(180, 100);
-			this->bookAppointmentButton->Name = L"bookAppointmentButton";
-			this->bookAppointmentButton->Size = System::Drawing::Size(150, 40);
-			this->bookAppointmentButton->TabIndex = 3;
-			this->bookAppointmentButton->Text = L"Book Appointment";
-			this->bookAppointmentButton->UseVisualStyleBackColor = false;
-			this->bookAppointmentButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::bookAppointmentButton_Click);
+			this->logoSubLabel->AutoSize = false;
+			this->logoSubLabel->Text = L"Doctor Dashboard";
+			this->logoSubLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8));
+			this->logoSubLabel->ForeColor = System::Drawing::Color::FromArgb(180, 212, 240);
+			this->logoSubLabel->Location = System::Drawing::Point(16, 38);
+			this->logoSubLabel->Size = System::Drawing::Size(190, 18);
 
-			// updateStatusButton
-			this->updateStatusButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(204)), static_cast<System::Int32>(static_cast<System::Byte>(102)));
-			this->updateStatusButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->updateStatusButton->ForeColor = System::Drawing::Color::White;
-			this->updateStatusButton->Location = System::Drawing::Point(340, 100);
-			this->updateStatusButton->Name = L"updateStatusButton";
-			this->updateStatusButton->Size = System::Drawing::Size(150, 40);
-			this->updateStatusButton->TabIndex = 4;
-			this->updateStatusButton->Text = L"Update Availability";
-			this->updateStatusButton->UseVisualStyleBackColor = false;
-			this->updateStatusButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::updateStatusButton_Click);
+			this->logoPanel->Controls->Add(this->logoLabel);
+			this->logoPanel->Controls->Add(this->logoSubLabel);
 
-			// addRecordButton
-			Button^ addRecordButton = gcnew Button();
-			addRecordButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(165)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
-			addRecordButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			addRecordButton->ForeColor = System::Drawing::Color::White;
-			addRecordButton->Location = System::Drawing::Point(20, 470);
-			addRecordButton->Name = L"addRecordButton";
-			addRecordButton->Size = System::Drawing::Size(180, 40);
-			addRecordButton->TabIndex = 7;
-			addRecordButton->Text = L"Log Medical Record";
-			addRecordButton->UseVisualStyleBackColor = false;
-			addRecordButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::addRecordButton_Click);
+			
+			this->sectionLabel1->AutoSize = false;
+			this->sectionLabel1->Text = L"APPOINTMENTS";
+			this->sectionLabel1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7, System::Drawing::FontStyle::Bold));
+			this->sectionLabel1->ForeColor = System::Drawing::Color::FromArgb(160, 158, 150);
+			this->sectionLabel1->Location = System::Drawing::Point(16, 88);
+			this->sectionLabel1->Size = System::Drawing::Size(180, 16);
 
-			// addPrescriptionButton
-			Button^ addPrescriptionButton = gcnew Button();
-			addPrescriptionButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(165)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
-			addPrescriptionButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			addPrescriptionButton->ForeColor = System::Drawing::Color::White;
-			addPrescriptionButton->Location = System::Drawing::Point(220, 470);
-			addPrescriptionButton->Name = L"addPrescriptionButton";
-			addPrescriptionButton->Size = System::Drawing::Size(180, 40);
-			addPrescriptionButton->TabIndex = 8;
-			addPrescriptionButton->Text = L"Write Prescription";
-			addPrescriptionButton->UseVisualStyleBackColor = false;
-			addPrescriptionButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::addPrescriptionButton_Click);
+			
+			this->sidebarDivider1->AutoSize = false;
+			this->sidebarDivider1->BackColor = System::Drawing::Color::FromArgb(230, 228, 220);
+			this->sidebarDivider1->Location = System::Drawing::Point(12, 246);
+			this->sidebarDivider1->Size = System::Drawing::Size(196, 1);
 
-			// logoutButton
-			this->logoutButton->BackColor = System::Drawing::Color::Red;
-			this->logoutButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->logoutButton->ForeColor = System::Drawing::Color::White;
-			this->logoutButton->Location = System::Drawing::Point(500, 100);
-			this->logoutButton->Name = L"logoutButton";
-			this->logoutButton->Size = System::Drawing::Size(120, 40);
-			this->logoutButton->TabIndex = 5;
-			this->logoutButton->Text = L"Logout";
-			this->logoutButton->UseVisualStyleBackColor = false;
+
+			this->sectionLabel2->AutoSize = false;
+			this->sectionLabel2->Text = L"PATIENT CARE";
+			this->sectionLabel2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7, System::Drawing::FontStyle::Bold));
+			this->sectionLabel2->ForeColor = System::Drawing::Color::FromArgb(160, 158, 150);
+			this->sectionLabel2->Location = System::Drawing::Point(16, 258);
+			this->sectionLabel2->Size = System::Drawing::Size(180, 16);
+
+		
+			this->sidebarDivider2->AutoSize = false;
+			this->sidebarDivider2->BackColor = System::Drawing::Color::FromArgb(230, 228, 220);
+			this->sidebarDivider2->Location = System::Drawing::Point(12, 386);
+			this->sidebarDivider2->Size = System::Drawing::Size(196, 1);
+
+		
+			this->logoutButton->Text = L"⏻  Logout";
+			this->logoutButton->Location = System::Drawing::Point(12, 620);
+			this->logoutButton->Size = System::Drawing::Size(196, 40);
+			this->logoutButton->BackColor = System::Drawing::Color::FromArgb(255, 240, 240);
+			this->logoutButton->ForeColor = System::Drawing::Color::FromArgb(180, 30, 30);
+			this->logoutButton->FlatStyle = FlatStyle::Flat;
+			this->logoutButton->FlatAppearance->BorderSize = 0;
+			this->logoutButton->FlatAppearance->MouseOverBackColor =
+				System::Drawing::Color::FromArgb(255, 220, 220);
+			this->logoutButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->logoutButton->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->logoutButton->Padding = System::Windows::Forms::Padding(10, 0, 0, 0);
+			this->logoutButton->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->logoutButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::logoutButton_Click);
 
-			// appointmentsGridView
-			this->appointmentsGridView->BackgroundColor = System::Drawing::Color::White;
-			this->appointmentsGridView->Location = System::Drawing::Point(20, 160);
-			this->appointmentsGridView->Name = L"appointmentsGridView";
-			this->appointmentsGridView->ReadOnly = true;
-			this->appointmentsGridView->Size = System::Drawing::Size(600, 300);
-			this->appointmentsGridView->TabIndex = 6;
+		
+			this->viewAppointmentsButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::viewAppointmentsButton_Click);
+			this->bookAppointmentButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::bookAppointmentButton_Click);
+			this->updateStatusButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::updateStatusButton_Click);
+			this->addRecordButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::addRecordButton_Click);
+			this->addPrescriptionButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::addPrescriptionButton_Click);
 
-			// DoctorDashboardForm
+		
+			this->sidebarPanel->Controls->Add(this->logoPanel);
+			this->sidebarPanel->Controls->Add(this->sectionLabel1);
+			this->sidebarPanel->Controls->Add(this->viewAppointmentsButton);
+			this->sidebarPanel->Controls->Add(this->bookAppointmentButton);
+			this->sidebarPanel->Controls->Add(this->updateStatusButton);
+			this->sidebarPanel->Controls->Add(this->sidebarDivider1);
+			this->sidebarPanel->Controls->Add(this->sectionLabel2);
+			this->sidebarPanel->Controls->Add(this->addRecordButton);
+			this->sidebarPanel->Controls->Add(this->addPrescriptionButton);
+			this->sidebarPanel->Controls->Add(this->sidebarDivider2);
+			this->sidebarPanel->Controls->Add(this->logoutButton);
+
+			
+			this->headerPanel->BackColor = System::Drawing::Color::White;
+			this->headerPanel->Location = System::Drawing::Point(220, 0);
+			this->headerPanel->Size = System::Drawing::Size(860, 64);
+
+			this->titleLabel->AutoSize = false;
+			this->titleLabel->Text = L"Doctor Dashboard";
+			this->titleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 15, System::Drawing::FontStyle::Bold));
+			this->titleLabel->ForeColor = System::Drawing::Color::FromArgb(4, 44, 83);
+			this->titleLabel->Location = System::Drawing::Point(24, 10);
+			this->titleLabel->Size = System::Drawing::Size(400, 28);
+			this->titleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+
+			this->welcomeLabel->AutoSize = false;
+			this->welcomeLabel->Text = L"Welcome, Doctor!";
+			this->welcomeLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9));
+			this->welcomeLabel->ForeColor = System::Drawing::Color::FromArgb(136, 135, 128);
+			this->welcomeLabel->Location = System::Drawing::Point(24, 38);
+			this->welcomeLabel->Size = System::Drawing::Size(300, 18);
+
+	
+			this->doctorIDLabel->AutoSize = false;
+			this->doctorIDLabel->Text = L"Doctor ID: N/A";
+			this->doctorIDLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->doctorIDLabel->ForeColor = System::Drawing::Color::FromArgb(24, 95, 165);
+			this->doctorIDLabel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			this->doctorIDLabel->Location = System::Drawing::Point(700, 22);
+			this->doctorIDLabel->Size = System::Drawing::Size(140, 22);
+			this->doctorIDLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->doctorIDLabel->Padding = System::Windows::Forms::Padding(6, 0, 6, 0);
+
+			this->headerPanel->Controls->Add(this->titleLabel);
+			this->headerPanel->Controls->Add(this->welcomeLabel);
+			this->headerPanel->Controls->Add(this->doctorIDLabel);
+
+			
+			this->contentPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			this->contentPanel->Location = System::Drawing::Point(220, 64);
+			this->contentPanel->Size = System::Drawing::Size(860, 616);
+
+			this->contentTitleLabel->AutoSize = false;
+			this->contentTitleLabel->Text = L"Select an action from the sidebar to view data";
+			this->contentTitleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
+			this->contentTitleLabel->ForeColor = System::Drawing::Color::FromArgb(136, 135, 128);
+			this->contentTitleLabel->Location = System::Drawing::Point(20, 16);
+			this->contentTitleLabel->Size = System::Drawing::Size(820, 22);
+			this->contentTitleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+
+			this->appointmentsGridView->BackgroundColor = System::Drawing::Color::White;
+			this->appointmentsGridView->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->appointmentsGridView->ColumnHeadersDefaultCellStyle->BackColor =
+				System::Drawing::Color::FromArgb(24, 95, 165);
+			this->appointmentsGridView->ColumnHeadersDefaultCellStyle->ForeColor =
+				System::Drawing::Color::White;
+			this->appointmentsGridView->ColumnHeadersDefaultCellStyle->Font =
+				(gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
+			this->appointmentsGridView->ColumnHeadersDefaultCellStyle->Padding =
+				System::Windows::Forms::Padding(8, 0, 0, 0);
+			this->appointmentsGridView->ColumnHeadersHeight = 36;
+			this->appointmentsGridView->EnableHeadersVisualStyles = false;
+			this->appointmentsGridView->DefaultCellStyle->Font =
+				(gcnew System::Drawing::Font(L"Segoe UI", 9));
+			this->appointmentsGridView->DefaultCellStyle->Padding =
+				System::Windows::Forms::Padding(6, 0, 0, 0);
+			this->appointmentsGridView->RowTemplate->Height = 30;
+			this->appointmentsGridView->AlternatingRowsDefaultCellStyle->BackColor =
+				System::Drawing::Color::FromArgb(245, 248, 252);
+			this->appointmentsGridView->GridColor = System::Drawing::Color::FromArgb(220, 225, 232);
+			this->appointmentsGridView->Location = System::Drawing::Point(20, 50);
+			this->appointmentsGridView->ReadOnly = true;
+			this->appointmentsGridView->Size = System::Drawing::Size(820, 540);
+			this->appointmentsGridView->SelectionMode = DataGridViewSelectionMode::FullRowSelect;
+			this->appointmentsGridView->RowHeadersVisible = false;
+			this->appointmentsGridView->AllowUserToAddRows = false;
+			this->appointmentsGridView->AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode::Fill;
+			this->appointmentsGridView->Name = L"appointmentsGridView";
+
+			this->contentPanel->Controls->Add(this->contentTitleLabel);
+			this->contentPanel->Controls->Add(this->appointmentsGridView);
+
+	
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(650, 530);
-			this->Controls->Add(addRecordButton);
-			this->Controls->Add(addPrescriptionButton);
-			this->Controls->Add(this->appointmentsGridView);
-			this->Controls->Add(this->logoutButton);
-		 this->Controls->Add(this->updateStatusButton);
-			this->Controls->Add(this->bookAppointmentButton);
-			this->Controls->Add(this->viewAppointmentsButton);
-			this->Controls->Add(this->welcomeLabel);
-			this->Controls->Add(this->titleLabel);
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
+			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
+			this->ClientSize = System::Drawing::Size(1080, 680);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
 			this->MaximizeBox = false;
 			this->Name = L"DoctorDashboardForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"HPS - Doctor Dashboard";
+
+			this->Controls->Add(this->sidebarPanel);
+			this->Controls->Add(this->headerPanel);
+			this->Controls->Add(this->contentPanel);
+
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->appointmentsGridView))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 		}
 
+		
 	private:
 		void UpdateWelcomeLabel() {
 			String^ username = gcnew String(currentUser->getUsername().c_str());
-			welcomeLabel->Text = "Welcome, " + username + " (Doctor)!";
+			int doctorID = currentUser->getUserID();
+
+			welcomeLabel->Text = "Welcome, " + username + " (Doctor)";
+
+			if (doctorID > 0)
+				doctorIDLabel->Text = "Doctor ID: " + doctorID.ToString();
+			else
+				doctorIDLabel->Text = "Doctor ID: N/A";
 		}
+
+
 
 	private: System::Void viewAppointmentsButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (dbManager->Connect()) {
 			appointmentsGridView->Rows->Clear();
 			appointmentsGridView->Columns->Clear();
+			contentTitleLabel->Text = L"Appointments";
 
 			appointmentsGridView->Columns->Add("ApptID", "Appointment ID");
 			appointmentsGridView->Columns->Add("PatientID", "Patient ID");
@@ -245,10 +375,8 @@ namespace HPSapp {
 		String^ surgStr = InputBox("Is this a surgery? (yes/no):");
 		if (String::IsNullOrEmpty(surgStr)) return;
 
-		String^ docIdStr = InputBox("Enter Your Doctor ID:");
-
 		int pId = Convert::ToInt32(pIdStr);
-		int docId = Convert::ToInt32(docIdStr);
+		int docId = currentUser->getUserID();
 		std::string startTime = msclr::interop::marshal_as<std::string>(startStr);
 		std::string endTime = msclr::interop::marshal_as<std::string>(endStr);
 		bool isSurgery = (surgStr->ToLower() == "yes");
@@ -272,14 +400,15 @@ namespace HPSapp {
 	}
 
 	private: System::Void updateStatusButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		String^ docIdStr = InputBox("Enter Your Doctor ID:");
-		if (String::IsNullOrEmpty(docIdStr)) return;
-
 		String^ availStr = InputBox("Are you available? (1 for Yes, 0 for No):");
 		if (String::IsNullOrEmpty(availStr)) return;
 
+		int docId = currentUser->getUserID();
+
 		if (dbManager->Connect()) {
-			std::string sqlQuery = "UPDATE Doctors SET IsAvailable=" + msclr::interop::marshal_as<std::string>(availStr) + " WHERE DoctorID=" + msclr::interop::marshal_as<std::string>(docIdStr) + ";";
+			std::string sqlQuery = "UPDATE Doctors SET IsAvailable=" +
+				msclr::interop::marshal_as<std::string>(availStr) +
+				" WHERE DoctorID=" + to_string(docId) + ";";
 			char* err;
 			if (sqlite3_exec(dbManager->getDB(), sqlQuery.c_str(), nullptr, 0, &err) == SQLITE_OK) {
 				MessageBox::Show("Availability Status Updated!", "Success", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -295,9 +424,6 @@ namespace HPSapp {
 		String^ pIdStr = InputBox("Enter Patient ID:");
 		if (String::IsNullOrEmpty(pIdStr)) return;
 
-		String^ docIdStr = InputBox("Enter Doctor ID (Your ID):");
-		if (String::IsNullOrEmpty(docIdStr)) return;
-
 		String^ diagnosis = InputBox("Enter Diagnosis:");
 		if (String::IsNullOrEmpty(diagnosis)) return;
 
@@ -305,7 +431,7 @@ namespace HPSapp {
 		String^ treatment = InputBox("Enter Treatment/Notes:");
 
 		int pId = Convert::ToInt32(pIdStr);
-		int docId = Convert::ToInt32(docIdStr);
+		int docId = currentUser->getUserID();
 
 		std::string dDiag = msclr::interop::marshal_as<std::string>(diagnosis);
 		std::string dSymp = msclr::interop::marshal_as<std::string>(symptoms);
@@ -326,16 +452,13 @@ namespace HPSapp {
 		String^ pIdStr = InputBox("Enter Patient ID:");
 		if (String::IsNullOrEmpty(pIdStr)) return;
 
-		String^ docIdStr = InputBox("Enter Doctor ID (Your ID):");
-		if (String::IsNullOrEmpty(docIdStr)) return;
-
 		String^ meds = InputBox("Enter Medicine/Drug Details:");
 		if (String::IsNullOrEmpty(meds)) return;
 
 		String^ instructions = InputBox("Enter Dosage/Instructions:");
 
 		int pId = Convert::ToInt32(pIdStr);
-		int docId = Convert::ToInt32(docIdStr);
+		int docId = currentUser->getUserID();
 
 		std::string sMeds = msclr::interop::marshal_as<std::string>(meds);
 		std::string sInst = msclr::interop::marshal_as<std::string>(instructions);
@@ -352,10 +475,12 @@ namespace HPSapp {
 	}
 
 	private: System::Void logoutButton_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (MessageBox::Show("Are you sure you want to logout?", "Logout", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+		if (MessageBox::Show("Are you sure you want to logout?", "Logout",
+			MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
 			this->Close();
 		}
 	}
+
 	private:
 		String^ InputBox(String^ prompt) {
 			Form^ form = gcnew Form();
@@ -366,15 +491,10 @@ namespace HPSapp {
 			form->TopMost = true;
 
 			Label^ label = gcnew Label();
-			label->Left = 20;
-			label->Top = 20;
-			label->Text = prompt;
-			label->Width = 250;
+			label->Left = 20; label->Top = 20; label->Text = prompt; label->Width = 250;
 
 			TextBox^ textBox = gcnew TextBox();
-			textBox->Left = 20;
-			textBox->Top = 50;
-			textBox->Width = 250;
+			textBox->Left = 20; textBox->Top = 50; textBox->Width = 250;
 
 			Button^ okButton = gcnew Button();
 			okButton->Text = "OK";
@@ -386,10 +506,8 @@ namespace HPSapp {
 			form->Controls->Add(label);
 			form->Controls->Add(textBox);
 			form->Controls->Add(okButton);
-
 			form->ShowDialog();
 			return textBox->Text;
 		}
-
 	};
 }
