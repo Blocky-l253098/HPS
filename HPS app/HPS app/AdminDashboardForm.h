@@ -22,7 +22,6 @@ namespace HPSapp {
 		DatabaseManager* dbManager;
 		Login* currentUser;
 
-		// ── UI Controls ───────────────────────────────────────────────────
 	private: System::Windows::Forms::Panel^ sidebarPanel;
 	private: System::Windows::Forms::Panel^ contentPanel;
 	private: System::Windows::Forms::Panel^ headerPanel;
@@ -69,7 +68,6 @@ namespace HPSapp {
 
 	private: System::ComponentModel::Container^ components;
 
-		   // ── Helper: sidebar button factory ────────────────────────────────
 	private:
 		Button^ MakeSidebarButton(String^ text, String^ icon, int yPos,
 			System::Drawing::Color bg, System::Drawing::Color fg)
@@ -96,7 +94,6 @@ namespace HPSapp {
 
 		void InitializeComponent(void)
 		{
-			// ── Allocate all controls ──────────────────────────────────
 			this->sidebarPanel = (gcnew Panel());
 			this->contentPanel = (gcnew Panel());
 			this->headerPanel = (gcnew Panel());
@@ -152,15 +149,13 @@ namespace HPSapp {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			this->SuspendLayout();
 
-			// ══════════════════════════════════════════════════════════
-			// SIDEBAR  (220 wide, full height)
-			// ══════════════════════════════════════════════════════════
+			
 			this->sidebarPanel->BackColor = System::Drawing::Color::White;
 			this->sidebarPanel->Location = System::Drawing::Point(0, 0);
 			this->sidebarPanel->Size = System::Drawing::Size(220, 680);
 			this->sidebarPanel->Name = L"sidebarPanel";
 
-			// ── Logo block ────────────────────────────────────────────
+			
 			this->logoPanel->BackColor = System::Drawing::Color::FromArgb(24, 95, 165);
 			this->logoPanel->Location = System::Drawing::Point(0, 0);
 			this->logoPanel->Size = System::Drawing::Size(220, 72);
@@ -184,7 +179,7 @@ namespace HPSapp {
 			this->logoPanel->Controls->Add(this->logoLabel);
 			this->logoPanel->Controls->Add(this->logoSubLabel);
 
-			// ── Section 1 label: MANAGE ───────────────────────────────
+			
 			this->sectionLabel1->AutoSize = false;
 			this->sectionLabel1->Text = L"MANAGE";
 			this->sectionLabel1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7, System::Drawing::FontStyle::Bold));
@@ -192,20 +187,17 @@ namespace HPSapp {
 			this->sectionLabel1->Location = System::Drawing::Point(16, 88);
 			this->sectionLabel1->Size = System::Drawing::Size(180, 16);
 
-			// Position manage buttons: y starts at 110
 			this->addAdminButton->Location = System::Drawing::Point(12, 108);
 			this->addPatientButton->Location = System::Drawing::Point(12, 152);
 			this->addDoctorButton->Location = System::Drawing::Point(12, 196);
 			this->viewPatientsButton->Location = System::Drawing::Point(12, 240);
 			this->viewDoctorsButton->Location = System::Drawing::Point(12, 284);
 
-			// ── Divider 1 ─────────────────────────────────────────────
 			this->sidebarDivider1->AutoSize = false;
 			this->sidebarDivider1->BackColor = System::Drawing::Color::FromArgb(230, 228, 220);
 			this->sidebarDivider1->Location = System::Drawing::Point(12, 334);
 			this->sidebarDivider1->Size = System::Drawing::Size(196, 1);
 
-			// ── Section 2 label: TOOLS ────────────────────────────────
 			this->sectionLabel2->AutoSize = false;
 			this->sectionLabel2->Text = L"TOOLS";
 			this->sectionLabel2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7, System::Drawing::FontStyle::Bold));
@@ -213,18 +205,16 @@ namespace HPSapp {
 			this->sectionLabel2->Location = System::Drawing::Point(16, 344);
 			this->sectionLabel2->Size = System::Drawing::Size(180, 16);
 
-			// Position tools buttons: y starts at 364
 			this->bedTrackingButton->Location = System::Drawing::Point(12, 364);
 			this->noticeBoardButton->Location = System::Drawing::Point(12, 408);
 			this->billingButton->Location = System::Drawing::Point(12, 452);
 
-			// ── Divider 2 ─────────────────────────────────────────────
+	
 			this->sidebarDivider2->AutoSize = false;
 			this->sidebarDivider2->BackColor = System::Drawing::Color::FromArgb(230, 228, 220);
 			this->sidebarDivider2->Location = System::Drawing::Point(12, 506);
 			this->sidebarDivider2->Size = System::Drawing::Size(196, 1);
 
-			// ── Logout button (bottom) ────────────────────────────────
 			this->logoutButton->Text = L"⏻  Logout";
 			this->logoutButton->Location = System::Drawing::Point(12, 620);
 			this->logoutButton->Size = System::Drawing::Size(196, 40);
@@ -240,7 +230,7 @@ namespace HPSapp {
 			this->logoutButton->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->logoutButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::logoutButton_Click);
 
-			// ── Wire sidebar button events ────────────────────────────
+			
 			this->addAdminButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::addAdminButton_Click);
 			this->addPatientButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::addPatientButton_Click);
 			this->addDoctorButton->Click += gcnew System::EventHandler(this, &AdminDashboardForm::addDoctorButton_Click);
@@ -250,7 +240,7 @@ namespace HPSapp {
 			this->noticeBoardButton->Click += gcnew EventHandler(this, &AdminDashboardForm::noticeBoardButton_Click);
 			this->billingButton->Click += gcnew EventHandler(this, &AdminDashboardForm::billingButton_Click);
 
-			// ── Add everything to sidebarPanel ───────────────────────
+			
 			this->sidebarPanel->Controls->Add(this->logoPanel);
 			this->sidebarPanel->Controls->Add(this->sectionLabel1);
 			this->sidebarPanel->Controls->Add(this->addAdminButton);
@@ -266,9 +256,7 @@ namespace HPSapp {
 			this->sidebarPanel->Controls->Add(this->sidebarDivider2);
 			this->sidebarPanel->Controls->Add(this->logoutButton);
 
-			// ══════════════════════════════════════════════════════════
-			// HEADER (top bar in content area)
-			// ══════════════════════════════════════════════════════════
+			
 			this->headerPanel->BackColor = System::Drawing::Color::White;
 			this->headerPanel->Location = System::Drawing::Point(220, 0);
 			this->headerPanel->Size = System::Drawing::Size(860, 64);
@@ -292,15 +280,13 @@ namespace HPSapp {
 			this->headerPanel->Controls->Add(this->titleLabel);
 			this->headerPanel->Controls->Add(this->welcomeLabel);
 
-			// ══════════════════════════════════════════════════════════
-			// CONTENT PANEL (right side, below header)
-			// ══════════════════════════════════════════════════════════
+			
 			this->contentPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
 			this->contentPanel->Location = System::Drawing::Point(220, 64);
 			this->contentPanel->Size = System::Drawing::Size(860, 616);
 			this->contentPanel->Name = L"contentPanel";
 
-			// ── Content title label ───────────────────────────────────
+			
 			this->contentTitleLabel->AutoSize = false;
 			this->contentTitleLabel->Text = L"Select an action from the sidebar to view data";
 			this->contentTitleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
@@ -309,7 +295,7 @@ namespace HPSapp {
 			this->contentTitleLabel->Size = System::Drawing::Size(820, 22);
 			this->contentTitleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 
-			// ── DataGridView ──────────────────────────────────────────
+			
 			this->dataGridView->BackgroundColor = System::Drawing::Color::White;
 			this->dataGridView->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->dataGridView->ColumnHeadersDefaultCellStyle->BackColor =
@@ -341,9 +327,7 @@ namespace HPSapp {
 			this->contentPanel->Controls->Add(this->contentTitleLabel);
 			this->contentPanel->Controls->Add(this->dataGridView);
 
-			// ══════════════════════════════════════════════════════════
-			// FORM
-			// ══════════════════════════════════════════════════════════
+		
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
@@ -362,16 +346,14 @@ namespace HPSapp {
 			this->PerformLayout();
 		}
 
-		// ── Helpers ───────────────────────────────────────────────────────
+		
 	private:
 		void UpdateWelcomeLabel() {
 			String^ username = gcnew String(currentUser->getUsername().c_str());
 			welcomeLabel->Text = "Welcome, " + username + " (Admin)";
 		}
 
-		// ══════════════════════════════════════════════════════════════════
-		// EVENT HANDLERS  — all logic identical to original, untouched
-		// ══════════════════════════════════════════════════════════════════
+		
 
 	private: System::Void addAdminButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ adminUsername = InputBox("Enter Admin Username:");

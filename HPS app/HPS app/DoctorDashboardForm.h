@@ -19,7 +19,7 @@ namespace HPSapp {
 		DatabaseManager* dbManager;
 		Login* currentUser;
 
-		// ── UI Controls ───────────────────────────────────────────────────
+		
 	private: System::Windows::Forms::Panel^ sidebarPanel;
 	private: System::Windows::Forms::Panel^ contentPanel;
 	private: System::Windows::Forms::Panel^ headerPanel;
@@ -64,7 +64,7 @@ namespace HPSapp {
 
 	private: System::ComponentModel::Container^ components;
 
-		   // ── Helper: sidebar button factory ────────────────────────────────
+		  
 	private:
 		Button^ MakeSidebarButton(String^ text, String^ icon, int yPos)
 		{
@@ -90,13 +90,13 @@ namespace HPSapp {
 
 		void InitializeComponent(void)
 		{
-			// ── Allocate panels ───────────────────────────────────────
+			
 			this->sidebarPanel = (gcnew Panel());
 			this->contentPanel = (gcnew Panel());
 			this->headerPanel = (gcnew Panel());
 			this->logoPanel = (gcnew Panel());
 
-			// ── Allocate labels ───────────────────────────────────────
+			
 			this->logoLabel = (gcnew Label());
 			this->logoSubLabel = (gcnew Label());
 			this->sidebarDivider1 = (gcnew Label());
@@ -108,7 +108,7 @@ namespace HPSapp {
 			this->titleLabel = (gcnew Label());
 			this->contentTitleLabel = (gcnew Label());
 
-			// ── Allocate sidebar buttons ──────────────────────────────
+			
 			this->viewAppointmentsButton = MakeSidebarButton(L"View Appointments", L"◉", 108);
 			this->bookAppointmentButton = MakeSidebarButton(L"Book Appointment", L"✚", 152);
 			this->updateStatusButton = MakeSidebarButton(L"Update Availability", L"↻", 196);
@@ -116,21 +116,18 @@ namespace HPSapp {
 			this->addPrescriptionButton = MakeSidebarButton(L"Write Prescription", L"✎", 334);
 			this->logoutButton = (gcnew Button());
 
-			// ── Allocate grid ─────────────────────────────────────────
+			
 			this->appointmentsGridView = (gcnew DataGridView());
 
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->appointmentsGridView))->BeginInit();
 			this->SuspendLayout();
 
-			// ══════════════════════════════════════════════════════════
-			// SIDEBAR
-			// ══════════════════════════════════════════════════════════
+		
 			this->sidebarPanel->BackColor = System::Drawing::Color::White;
 			this->sidebarPanel->Location = System::Drawing::Point(0, 0);
 			this->sidebarPanel->Size = System::Drawing::Size(220, 680);
 			this->sidebarPanel->Name = L"sidebarPanel";
 
-			// ── Logo block ────────────────────────────────────────────
 			this->logoPanel->BackColor = System::Drawing::Color::FromArgb(24, 95, 165);
 			this->logoPanel->Location = System::Drawing::Point(0, 0);
 			this->logoPanel->Size = System::Drawing::Size(220, 72);
@@ -153,7 +150,7 @@ namespace HPSapp {
 			this->logoPanel->Controls->Add(this->logoLabel);
 			this->logoPanel->Controls->Add(this->logoSubLabel);
 
-			// ── Section 1: APPOINTMENTS ───────────────────────────────
+			
 			this->sectionLabel1->AutoSize = false;
 			this->sectionLabel1->Text = L"APPOINTMENTS";
 			this->sectionLabel1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7, System::Drawing::FontStyle::Bold));
@@ -161,16 +158,13 @@ namespace HPSapp {
 			this->sectionLabel1->Location = System::Drawing::Point(16, 88);
 			this->sectionLabel1->Size = System::Drawing::Size(180, 16);
 
-			// viewAppointmentsButton, bookAppointmentButton, updateStatusButton
-			// already positioned in MakeSidebarButton calls above
-
-			// ── Divider 1 ─────────────────────────────────────────────
+			
 			this->sidebarDivider1->AutoSize = false;
 			this->sidebarDivider1->BackColor = System::Drawing::Color::FromArgb(230, 228, 220);
 			this->sidebarDivider1->Location = System::Drawing::Point(12, 246);
 			this->sidebarDivider1->Size = System::Drawing::Size(196, 1);
 
-			// ── Section 2: PATIENT CARE ───────────────────────────────
+
 			this->sectionLabel2->AutoSize = false;
 			this->sectionLabel2->Text = L"PATIENT CARE";
 			this->sectionLabel2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 7, System::Drawing::FontStyle::Bold));
@@ -178,15 +172,13 @@ namespace HPSapp {
 			this->sectionLabel2->Location = System::Drawing::Point(16, 258);
 			this->sectionLabel2->Size = System::Drawing::Size(180, 16);
 
-			// addRecordButton y=290, addPrescriptionButton y=334 (set above)
-
-			// ── Divider 2 ─────────────────────────────────────────────
+		
 			this->sidebarDivider2->AutoSize = false;
 			this->sidebarDivider2->BackColor = System::Drawing::Color::FromArgb(230, 228, 220);
 			this->sidebarDivider2->Location = System::Drawing::Point(12, 386);
 			this->sidebarDivider2->Size = System::Drawing::Size(196, 1);
 
-			// ── Logout (bottom) ───────────────────────────────────────
+		
 			this->logoutButton->Text = L"⏻  Logout";
 			this->logoutButton->Location = System::Drawing::Point(12, 620);
 			this->logoutButton->Size = System::Drawing::Size(196, 40);
@@ -202,14 +194,14 @@ namespace HPSapp {
 			this->logoutButton->Cursor = System::Windows::Forms::Cursors::Hand;
 			this->logoutButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::logoutButton_Click);
 
-			// ── Wire events ───────────────────────────────────────────
+		
 			this->viewAppointmentsButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::viewAppointmentsButton_Click);
 			this->bookAppointmentButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::bookAppointmentButton_Click);
 			this->updateStatusButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::updateStatusButton_Click);
 			this->addRecordButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::addRecordButton_Click);
 			this->addPrescriptionButton->Click += gcnew System::EventHandler(this, &DoctorDashboardForm::addPrescriptionButton_Click);
 
-			// ── Add to sidebarPanel ───────────────────────────────────
+		
 			this->sidebarPanel->Controls->Add(this->logoPanel);
 			this->sidebarPanel->Controls->Add(this->sectionLabel1);
 			this->sidebarPanel->Controls->Add(this->viewAppointmentsButton);
@@ -222,9 +214,7 @@ namespace HPSapp {
 			this->sidebarPanel->Controls->Add(this->sidebarDivider2);
 			this->sidebarPanel->Controls->Add(this->logoutButton);
 
-			// ══════════════════════════════════════════════════════════
-			// HEADER
-			// ══════════════════════════════════════════════════════════
+			
 			this->headerPanel->BackColor = System::Drawing::Color::White;
 			this->headerPanel->Location = System::Drawing::Point(220, 0);
 			this->headerPanel->Size = System::Drawing::Size(860, 64);
@@ -244,7 +234,7 @@ namespace HPSapp {
 			this->welcomeLabel->Location = System::Drawing::Point(24, 38);
 			this->welcomeLabel->Size = System::Drawing::Size(300, 18);
 
-			// Doctor ID badge — top right of header
+	
 			this->doctorIDLabel->AutoSize = false;
 			this->doctorIDLabel->Text = L"Doctor ID: N/A";
 			this->doctorIDLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
@@ -259,9 +249,7 @@ namespace HPSapp {
 			this->headerPanel->Controls->Add(this->welcomeLabel);
 			this->headerPanel->Controls->Add(this->doctorIDLabel);
 
-			// ══════════════════════════════════════════════════════════
-			// CONTENT PANEL
-			// ══════════════════════════════════════════════════════════
+			
 			this->contentPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
 			this->contentPanel->Location = System::Drawing::Point(220, 64);
 			this->contentPanel->Size = System::Drawing::Size(860, 616);
@@ -274,7 +262,6 @@ namespace HPSapp {
 			this->contentTitleLabel->Size = System::Drawing::Size(820, 22);
 			this->contentTitleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 
-			// ── DataGridView ──────────────────────────────────────────
 			this->appointmentsGridView->BackgroundColor = System::Drawing::Color::White;
 			this->appointmentsGridView->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->appointmentsGridView->ColumnHeadersDefaultCellStyle->BackColor =
@@ -307,9 +294,7 @@ namespace HPSapp {
 			this->contentPanel->Controls->Add(this->contentTitleLabel);
 			this->contentPanel->Controls->Add(this->appointmentsGridView);
 
-			// ══════════════════════════════════════════════════════════
-			// FORM
-			// ══════════════════════════════════════════════════════════
+	
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
@@ -329,7 +314,7 @@ namespace HPSapp {
 			this->PerformLayout();
 		}
 
-		// ── Helpers ───────────────────────────────────────────────────────
+		
 	private:
 		void UpdateWelcomeLabel() {
 			String^ username = gcnew String(currentUser->getUsername().c_str());
@@ -343,9 +328,7 @@ namespace HPSapp {
 				doctorIDLabel->Text = "Doctor ID: N/A";
 		}
 
-		// ══════════════════════════════════════════════════════════════════
-		// EVENT HANDLERS — all logic identical to original, untouched
-		// ══════════════════════════════════════════════════════════════════
+
 
 	private: System::Void viewAppointmentsButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (dbManager->Connect()) {

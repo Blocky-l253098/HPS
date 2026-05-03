@@ -72,13 +72,12 @@ namespace HPSapp {
 	private:
 		void ApplyModernStyle()
 		{
-			// Form background
+	
 			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
 
-			// Main Panel
 			mainPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
 
-			// Form Panel - white card with subtle shadow effect via border
+			// Form Panel 
 			formPanel->BackColor = System::Drawing::Color::White;
 
 			// Title
@@ -171,19 +170,19 @@ namespace HPSapp {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 
-			// ── mainPanel ──────────────────────────────────────────────
+			//  mainPanel
 			this->mainPanel->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->mainPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
 			this->mainPanel->Name = L"mainPanel";
 
-			// ── formPanel (white card) ─────────────────────────────────
+			//  formPanel 
 			this->formPanel->BackColor = System::Drawing::Color::White;
 			this->formPanel->Location = System::Drawing::Point(70, 30);
 			this->formPanel->Name = L"formPanel";
 			this->formPanel->Size = System::Drawing::Size(380, 540);
 			this->formPanel->TabIndex = 0;
 
-			// ── titleLabel ────────────────────────────────────────────
+			//  titleLabel
 			this->titleLabel->AutoSize = false;
 			this->titleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 18, System::Drawing::FontStyle::Bold));
 			this->titleLabel->ForeColor = System::Drawing::Color::FromArgb(4, 44, 83);
@@ -193,7 +192,7 @@ namespace HPSapp {
 			this->titleLabel->Text = L"Hospital Management";
 			this->titleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 
-			// ── subtitleLabel ─────────────────────────────────────────
+			//  subtitleLabel
 			this->subtitleLabel->AutoSize = false;
 			this->subtitleLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
 			this->subtitleLabel->ForeColor = System::Drawing::Color::FromArgb(136, 135, 128);
@@ -203,7 +202,7 @@ namespace HPSapp {
 			this->subtitleLabel->Text = L"Sign in to your account";
 			this->subtitleLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 
-			// ── usernameLabel ─────────────────────────────────────────
+			// usernameLabel 
 			this->usernameLabel->AutoSize = true;
 			this->usernameLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
 			this->usernameLabel->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
@@ -212,7 +211,7 @@ namespace HPSapp {
 			this->usernameLabel->Text = L"USERNAME";
 			this->usernameLabel->TabIndex = 5;
 
-			// ── usernameTextBox ───────────────────────────────────────
+			//  usernameTextBox
 			this->usernameTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
 			this->usernameTextBox->Location = System::Drawing::Point(30, 132);
 			this->usernameTextBox->Name = L"usernameTextBox";
@@ -220,7 +219,7 @@ namespace HPSapp {
 			this->usernameTextBox->TabIndex = 0;
 			this->usernameTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
 
-			// ── passwordLabel ─────────────────────────────────────────
+			// passwordLabel 
 			this->passwordLabel->AutoSize = true;
 			this->passwordLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
 			this->passwordLabel->ForeColor = System::Drawing::Color::FromArgb(95, 94, 90);
@@ -229,7 +228,7 @@ namespace HPSapp {
 			this->passwordLabel->Text = L"PASSWORD";
 			this->passwordLabel->TabIndex = 6;
 
-			// ── passwordTextBox ───────────────────────────────────────
+			// passwordTextBox
 			this->passwordTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
 			this->passwordTextBox->Location = System::Drawing::Point(30, 206);
 			this->passwordTextBox->Name = L"passwordTextBox";
@@ -238,7 +237,7 @@ namespace HPSapp {
 			this->passwordTextBox->TabIndex = 1;
 			this->passwordTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
 
-			// ── captchaLabel (shows the question) ────────────────────
+			// captchaLabel 
 			this->captchaLabel->AutoSize = false;
 			this->captchaLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
 			this->captchaLabel->ForeColor = System::Drawing::Color::FromArgb(12, 68, 124);
@@ -250,7 +249,7 @@ namespace HPSapp {
 			this->captchaLabel->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->captchaLabel->Padding = System::Windows::Forms::Padding(6, 0, 0, 0);
 
-			// ── captchaTextBox ────────────────────────────────────────
+			// captchaTextBox 
 			this->captchaTextBox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10));
 			this->captchaTextBox->Location = System::Drawing::Point(30, 296);
 			this->captchaTextBox->Name = L"captchaTextBox";
@@ -258,7 +257,7 @@ namespace HPSapp {
 			this->captchaTextBox->TabIndex = 2;
 			this->captchaTextBox->BackColor = System::Drawing::Color::FromArgb(248, 249, 252);
 
-			// ── refreshCaptchaButton ──────────────────────────────────
+			// refreshCaptchaButton
 			this->refreshCaptchaButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Bold));
 			this->refreshCaptchaButton->Location = System::Drawing::Point(248, 296);
 			this->refreshCaptchaButton->Name = L"refreshCaptchaButton";
@@ -268,7 +267,7 @@ namespace HPSapp {
 			this->refreshCaptchaButton->UseVisualStyleBackColor = false;
 			this->refreshCaptchaButton->Click += gcnew System::EventHandler(this, &LoginForm::refreshCaptchaButton_Click);
 
-			// ── errorLabel ────────────────────────────────────────────
+			//  errorLabel 
 			this->errorLabel->AutoSize = false;
 			this->errorLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9));
 			this->errorLabel->ForeColor = System::Drawing::Color::FromArgb(226, 75, 74);
@@ -278,7 +277,7 @@ namespace HPSapp {
 			this->errorLabel->Text = L"";
 			this->errorLabel->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
-			// ── loginButton ───────────────────────────────────────────
+			// loginButton 
 			this->loginButton->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11, System::Drawing::FontStyle::Bold));
 			this->loginButton->Location = System::Drawing::Point(30, 374);
 			this->loginButton->Name = L"loginButton";
@@ -288,7 +287,6 @@ namespace HPSapp {
 			this->loginButton->UseVisualStyleBackColor = false;
 			this->loginButton->Click += gcnew System::EventHandler(this, &LoginForm::loginButton_Click);
 
-			// ── pictureBox1 (hidden, reserved) ────────────────────────
 			this->pictureBox1->Location = System::Drawing::Point(30, 430);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(320, 1);
@@ -296,7 +294,7 @@ namespace HPSapp {
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Visible = false;
 
-			// ── Form ──────────────────────────────────────────────────
+			//  Form
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
@@ -308,7 +306,7 @@ namespace HPSapp {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"HPS - Hospital Management System";
 
-			// ── Add controls to formPanel ─────────────────────────────
+			// Add controls to formPanel 
 			this->formPanel->Controls->Add(this->titleLabel);
 			this->formPanel->Controls->Add(this->subtitleLabel);
 			this->formPanel->Controls->Add(this->usernameLabel);
@@ -322,7 +320,7 @@ namespace HPSapp {
 			this->formPanel->Controls->Add(this->loginButton);
 			this->formPanel->Controls->Add(this->pictureBox1);
 
-			// ── Add formPanel to mainPanel, mainPanel to Form ─────────
+			// Add formPanel to mainPanel, mainPanel to Form 
 			this->mainPanel->Controls->Add(this->formPanel);
 			this->Controls->Add(this->mainPanel);
 
@@ -331,7 +329,7 @@ namespace HPSapp {
 			this->PerformLayout();
 		}
 
-		// ── Event Handlers (backend untouched) ────────────────────────────
+
 
 	private: System::Void refreshCaptchaButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		GenerateNewCaptcha();
@@ -396,12 +394,12 @@ namespace HPSapp {
 			return;
 		}
 
-		// Database سے Doctor یا Patient کی ID fetch کریں
+		
 		int userID = 0;
 		sqlite3_stmt* stmt;
 		
 		if (role == "Doctor") {
-			// Doctor کی ID لیں
+		
 			std::string queryID = "SELECT DoctorID FROM Doctors WHERE Name='" + unmanaged_username + "' LIMIT 1;";
 			if (sqlite3_prepare_v2(dbManager->getDB(), queryID.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
 				if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -411,7 +409,7 @@ namespace HPSapp {
 			}
 		}
 		else if (role == "Patient") {
-			// Patient کی ID لیں
+			
 			std::string queryID = "SELECT PatientID FROM Patients WHERE Name='" + unmanaged_username + "' LIMIT 1;";
 			if (sqlite3_prepare_v2(dbManager->getDB(), queryID.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
 				if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -424,7 +422,7 @@ namespace HPSapp {
 		loginSession->setUsername(unmanaged_username);
 		loginSession->setPassword(unmanaged_password);
 		loginSession->setUserRole(role);
-		loginSession->setUserID(userID);  // ✅ ID set کریں
+		loginSession->setUserID(userID);  
 
 		errorLabel->Text = "";
 
