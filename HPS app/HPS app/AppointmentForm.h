@@ -214,6 +214,7 @@ namespace HPSapp {
 			return;
 		}
 
+		
 		int patientId = SessionManager::CurrentUserId;
 
 	

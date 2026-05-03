@@ -89,9 +89,11 @@ public:
 	}
 	string ValidateUser(string username, string password) {
 		string role = "None";
-		string sqlQuery = "SELECT Role FROM Users WHERE Username='" + username + "' AND Password='" + password + "';";
+		string sqlQuery = "SELECT Role FROM Users WHERE Username=? AND Password=?;";
 		sqlite3_stmt* stmt;
 		if (sqlite3_prepare_v2(DB, sqlQuery.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+			sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_TRANSIENT);
 			if (sqlite3_step(stmt) == SQLITE_ROW) {
 				role = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
 			}

@@ -40,10 +40,7 @@ namespace HPSapp
 	private: System::Windows::Forms::Label^ contentTitleLabel;
 
 		   // Info cards in content area
-	private: System::Windows::Forms::Panel^ bedCardPanel;
 	private: System::Windows::Forms::Panel^ doctorCardPanel;
-	private: System::Windows::Forms::Label^ bedCardTitle;
-	private: System::Windows::Forms::Label^ bedStatusLabel;
 	private: System::Windows::Forms::Label^ doctorCardTitle;
 	private: System::Windows::Forms::Label^ doctorAssignedLabel;
 
@@ -55,11 +52,12 @@ namespace HPSapp
 
 	public:
 		PatientDashboardForm(Login* user)
-		{
+		{	
 			currentUser = user;
 			dbManager = new DatabaseManager();
 			InitializeComponent();
 			UpdateWelcomeLabel();
+			LoadPatientDetails();
 		}
 
 	protected:
@@ -151,8 +149,6 @@ namespace HPSapp
 			this->welcomeLabel = (gcnew Label());
 			this->titleLabel = (gcnew Label());
 			this->contentTitleLabel = (gcnew Label());
-			this->bedCardTitle = (gcnew Label());
-			this->bedStatusLabel = (gcnew Label());
 			this->doctorCardTitle = (gcnew Label());
 			this->doctorAssignedLabel = (gcnew Label());
 
@@ -296,39 +292,10 @@ namespace HPSapp
 			this->contentTitleLabel->Size = System::Drawing::Size(820, 16);
 
 			//  Info Cards
-			// Bed Card
-			this->bedCardPanel = gcnew Panel();
-			this->bedCardPanel->BackColor = System::Drawing::Color::White;
-			this->bedCardPanel->Location = System::Drawing::Point(20, 46);
-			this->bedCardPanel->Size = System::Drawing::Size(390, 72);
-
-			Panel^ bedBar = gcnew Panel();
-			bedBar->BackColor = System::Drawing::Color::FromArgb(24, 95, 165);
-			bedBar->Location = System::Drawing::Point(0, 0);
-			bedBar->Size = System::Drawing::Size(390, 4);
-			this->bedCardPanel->Controls->Add(bedBar);
-
-			this->bedCardTitle->AutoSize = false;
-			this->bedCardTitle->Text = L"ASSIGNED BED";
-			this->bedCardTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
-			this->bedCardTitle->ForeColor = System::Drawing::Color::FromArgb(160, 158, 150);
-			this->bedCardTitle->Location = System::Drawing::Point(14, 14);
-			this->bedCardTitle->Size = System::Drawing::Size(360, 16);
-
-			this->bedStatusLabel->AutoSize = false;
-			this->bedStatusLabel->Text = L"Not Assigned";
-			this->bedStatusLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
-			this->bedStatusLabel->ForeColor = System::Drawing::Color::FromArgb(4, 44, 83);
-			this->bedStatusLabel->Location = System::Drawing::Point(14, 34);
-			this->bedStatusLabel->Size = System::Drawing::Size(360, 24);
-
-			this->bedCardPanel->Controls->Add(this->bedCardTitle);
-			this->bedCardPanel->Controls->Add(this->bedStatusLabel);
-
-			// Doctor Card
+			// Patient ID Card
 			this->doctorCardPanel = gcnew Panel();
 			this->doctorCardPanel->BackColor = System::Drawing::Color::White;
-			this->doctorCardPanel->Location = System::Drawing::Point(430, 46);
+			this->doctorCardPanel->Location = System::Drawing::Point(20, 46);
 			this->doctorCardPanel->Size = System::Drawing::Size(410, 72);
 
 			Panel^ docBar = gcnew Panel();
@@ -338,14 +305,14 @@ namespace HPSapp
 			this->doctorCardPanel->Controls->Add(docBar);
 
 			this->doctorCardTitle->AutoSize = false;
-			this->doctorCardTitle->Text = L"ASSIGNED DOCTOR";
+			this->doctorCardTitle->Text = L"PATIENT ID";
 			this->doctorCardTitle->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
 			this->doctorCardTitle->ForeColor = System::Drawing::Color::FromArgb(160, 158, 150);
 			this->doctorCardTitle->Location = System::Drawing::Point(14, 14);
 			this->doctorCardTitle->Size = System::Drawing::Size(380, 16);
 
 			this->doctorAssignedLabel->AutoSize = false;
-			this->doctorAssignedLabel->Text = L"Not Assigned";
+			this->doctorAssignedLabel->Text = L"Loading...";
 			this->doctorAssignedLabel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
 			this->doctorAssignedLabel->ForeColor = System::Drawing::Color::FromArgb(4, 44, 83);
 			this->doctorAssignedLabel->Location = System::Drawing::Point(14, 34);
@@ -356,7 +323,6 @@ namespace HPSapp
 
 			//  Add everything to contentPanel 
 			this->contentPanel->Controls->Add(this->contentTitleLabel);
-			this->contentPanel->Controls->Add(this->bedCardPanel);
 			this->contentPanel->Controls->Add(this->doctorCardPanel);
 
 		
@@ -465,6 +431,8 @@ namespace HPSapp
 
 	private: System::Void bookAppointmentButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		AppointmentForm^ form = gcnew AppointmentForm();
+		//SessionManager::CurrentUserId = currentUser->getUserID();
+		SessionManager::StartSession(currentUser->getUserID(), gcnew String(currentUser->getUsername().c_str()), "Patient");
 		form->ShowDialog();
 	}
 
@@ -483,6 +451,11 @@ namespace HPSapp
 	private: System::Void bookSurgeryButton_Click(System::Object^ sender, System::EventArgs^ e) {
 		SurgeryForm^ form = gcnew SurgeryForm();
 		form->ShowDialog();
+	}
+
+	private: void LoadPatientDetails() {
+		int pId = currentUser->getUserID();
+		doctorAssignedLabel->Text = pId.ToString();
 	}
 	};
 }

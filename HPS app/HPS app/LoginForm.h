@@ -72,7 +72,7 @@ namespace HPSapp {
 	private:
 		void ApplyModernStyle()
 		{
-	
+
 			this->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
 
 			mainPanel->BackColor = System::Drawing::Color::FromArgb(235, 243, 251);
@@ -394,12 +394,12 @@ namespace HPSapp {
 			return;
 		}
 
-		
+
 		int userID = 0;
 		sqlite3_stmt* stmt;
-		
+
 		if (role == "Doctor") {
-		
+
 			std::string queryID = "SELECT DoctorID FROM Doctors WHERE Name='" + unmanaged_username + "' LIMIT 1;";
 			if (sqlite3_prepare_v2(dbManager->getDB(), queryID.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
 				if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -409,7 +409,7 @@ namespace HPSapp {
 			}
 		}
 		else if (role == "Patient") {
-			
+
 			std::string queryID = "SELECT PatientID FROM Patients WHERE Name='" + unmanaged_username + "' LIMIT 1;";
 			if (sqlite3_prepare_v2(dbManager->getDB(), queryID.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
 				if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -422,10 +422,10 @@ namespace HPSapp {
 		loginSession->setUsername(unmanaged_username);
 		loginSession->setPassword(unmanaged_password);
 		loginSession->setUserRole(role);
-		loginSession->setUserID(userID);  
+		loginSession->setUserID(userID);
 
 		errorLabel->Text = "";
-		
+
 		System::String^ managedRole = gcnew System::String(role.c_str());
 		SessionManager::StartSession(userID, username, managedRole);
 
