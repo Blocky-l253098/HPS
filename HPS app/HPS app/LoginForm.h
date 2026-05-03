@@ -425,8 +425,9 @@ namespace HPSapp {
 		loginSession->setUserID(userID);  
 
 		errorLabel->Text = "";
-
+		
 		System::String^ managedRole = gcnew System::String(role.c_str());
+		SessionManager::StartSession(userID, username, managedRole);
 
 		if (managedRole == "Admin") {
 			HPSapp::AdminDashboardForm^ adminForm = gcnew HPSapp::AdminDashboardForm(loginSession);
